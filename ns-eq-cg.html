@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Python Time Series Fit &mdash; itsonlyamodel</title>
+  <meta name="author" content="tyler tucker">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="./favicon.png" rel="icon">
+
+  <link href="./theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="./">itsonlyamodel</a></h1>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+      <li >
+        <a href="./category/about.html">About</a>
+      </li>
+      <li >
+        <a href="./category/argo.html">Argo</a>
+      </li>
+      <li >
+        <a href="./category/ims.html">Ims</a>
+      </li>
+      <li class="active">
+        <a href="./category/math.html">Math</a>
+      </li>
+      <li >
+        <a href="./category/python.html">Python</a>
+      </li>
+      <li >
+        <a href="./category/statistics.html">Statistics</a>
+      </li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">Python Time Series Fit</h1>
+    <p class="meta">
+<time datetime="2018-05-03T23:00:00-07:00" pubdate>Thu 03 May 2018</time>    </p>
+</header>
+
+  <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Ocean-Modeling-with-the-Navier-Stokes-Equations:-or-as-I-think-of-it,--'my-missed-oppurtunity.'">Ocean Modeling with the Navier-Stokes Equations: or as I think of it,  'my missed oppurtunity.'<a class="anchor-link" href="#Ocean-Modeling-with-the-Navier-Stokes-Equations:-or-as-I-think-of-it,--'my-missed-oppurtunity.'">¶</a></h1><p>Tyler Tucker</p>
+<h2 id="Project-outline">Project outline<a class="anchor-link" href="#Project-outline">¶</a></h2><p>This work borrows heavily from Jochen Kaempf's book Advanced Ocean Modelling: Using Open-Source Software. Equations, terminology, and code are used to model physical ocean processes. Kaempf's numerical method of choice is the Successive Over-Relaxation (SOR) method. Although there are faster more efficient methods using Krylov Subspace methods, the SOR can be as an exclusive solver for non-symmetric matrices, where the latter methods may need some tweaking. Nevertheless, I am set out to see how much more efficient these methods can be.</p>
+<p>In this work, I will implement Successive over relaxation (SOR), conjugate gradient (CG), and bi-conjugate gradient stability (BICGSTAB) methods on existing numerical solutions covered in his book. The scope of the project is to swap out the SOR solver with CG and BICGSTAB for the following simulations.</p>
+<ul>
+<li>Surface Gravity Waves</li>
+<li>Density-Driven Flow</li>
+<li>Kelvin Helmholtz Instability</li>
+<li>Convection</li>
+</ul>
+<h3 id="Navier-Stokes-Equations">Navier Stokes Equations<a class="anchor-link" href="#Navier-Stokes-Equations">¶</a></h3><p>A Fluid is modeled using the Navier-Stokes equations (NSE). Discretizing NSE leads to the Poisson equation. The NSE equations in two dimensions are the following.</p>
+<p>$$
+\frac{\partial u}{\partial t} + Adv(u) = -\frac{1}{\rho_0}\frac{\partial P}{\partial x} + \frac{\partial }{\partial x}\left( A_h \frac{\partial u}{\partial x} \right) + \frac{\partial}{\partial z}\left( A_z\frac{\partial u}{\partial z} \right)
+$$
+$$
+\frac{\partial w}{\partial t} + Adv(w) = -\frac{1}{\rho_0}\frac{\partial P}{\partial z} -\frac{\rho'}{\rho_0}g + \frac{\partial }{\partial x}\left( A_h \frac{\partial w}{\partial x} \right) + \frac{\partial}{\partial z}\left( A_z\frac{\partial w}{\partial z} \right)
+$$
+$$
+\frac{\partial u}{\partial x} + \frac{\partial w}{\partial z} = 0
+$$
+$$
+Adv(\psi) = u \frac{\partial \psi}{\partial x} + w \frac{\partial \psi}{\partial z}
+$$</p>
+<p>For horizonatal and vertical velocity $u$ and $w$, pressure $P$ density $\rho_0$, local density $\rho'$, and horizontal and vertical eddy viscosity $A_h$, $A_z$.
+We will eventually model this in its entirety, but first, let's ignore the Advection terms. Here density is constant. The simplified NSE become</p>
+<p>$$
+\frac{\partial u}{\partial t} = -\frac{1}{\rho_0}\frac{\partial P}{\partial x}
+$$
+$$
+\frac{\partial w}{\partial t} = -\frac{1}{\rho_0}\frac{\partial P}{\partial z}
+$$
+$$
+\frac{\partial u}{\partial x} + \frac{\partial w}{\partial z} = 0
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Surface-gravity-waves">Surface gravity waves<a class="anchor-link" href="#Surface-gravity-waves">¶</a></h2><h3 id="description:">description:<a class="anchor-link" href="#description:">¶</a></h3><p>Suppose we have a 100x500 slice of 2d Ocean, and we splash waves at the top surface. We can estimate the dynamic pressure field by solving the simplified NSE. See below for a gif.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="Alt Text" src="./figures/surf-cg.gif" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Modeling:">Modeling:<a class="anchor-link" href="#Modeling:">¶</a></h3><p>For a two dimensional ocean on a rectangular coordinate system (flat bottom) The evolution of sea level is described by the volumetric conservation equation</p>
+<p>$$
+\frac{\partial \eta}{\partial t} = -\frac{\partial h(u)}{\partial x} 
+$$</p>
+<p>For depth from sea surface $\eta$ and depth integrated horizontal flow $h(u) = \int_0^L u(x,z)dz$. This equation describes surface waves.</p>
+<p>A hydrostatic equation has the form: 
+$$
+p = \rho_0 g \eta
+$$
+Total pressure is a linear combination of hydrostatic pressure $p$ and dynamic pressure $q$.
+$$
+P = p + q
+$$
+Since $P$ is a linear combination, we can model dynamic pressure with our simplified NSE.
+$$
+\frac{\partial u}{\partial t} = -\frac{1}{\rho_0}\frac{\partial q}{\partial x}
+$$
+$$
+\frac{\partial w}{\partial t} = -\frac{1}{\rho_0}\frac{\partial q}{\partial z}
+$$
+$$
+\frac{\partial u}{\partial x} + \frac{\partial w}{\partial z} = 0
+$$
+$$
+\frac{\partial q_s}{\partial t} = -\rho_0 g \frac{\partial h(u)}{\partial x} 
+$$
+Solving for velocities $u$ and $w$ involves first solving dynamic pressure $q$, which is further decomposed into two portions. The first is the current pressure at time step $n$, $q^n$ and the second is the dynamic pressure correction term $\Delta q^{n+1}$
+$$
+q \rightarrow q^n + \Delta q^{n+1}
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We calculate $\Delta q^{n+1}$ implicitly using PDE's such as SOR or CG. To do this need to discritize and write our velocities in terms of pressure. First start with a guess $u^*$ adn $w^*$ for the whole domian, indexed by $i, k$
+$$
+u^*_{i,k} = u^n_{i,k} - \frac{\Delta t}{\rho_0 \Delta x}\left(q^{n}_{i, k+1} - q^{n}_{i,k} \right)
+$$
+$$
+w^*_{i,k} = w^n_{i,k} - \frac{\Delta t}{\rho_0 \Delta z}\left(q^{n}_{i-1, k} - q^{n}_{i,k} \right)
+$$
+We then solve for $u^{n+1}_{i,k}$ $w^{n+1}_{i,k}$ with our guesses.
+$$
+u^{n+1}_{i,k} = u^*_{i,k} - \frac{\Delta t}{\rho_0 \Delta x}\left(\Delta q^{n+1}_{i, k+1} - \Delta q^{n+1}_{i,k} \right)
+$$
+$$
+w^{n+1}_{i,k} = w^*_{i,k} - \frac{\Delta t}{\rho_0 \Delta z}\left(\Delta q^{n-1}_{i, k+1} - \Delta q^{n+1}_{i,k} \right)
+$$
+The 'simpliest' term in the NSE is the continuity equation. This says that our fluid is incompressible.
+$$
+\frac{\partial u}{\partial x} + \frac{\partial w}{\partial z} = 0
+$$
+Discritizing this by backward differencing $\frac{\partial u}{\partial x}$ and forward differnce $\frac{\partial w}{\partial z}$ to get
+$$
+\frac{u^{n+1}_{i,k} - u^{n+1}_{i,k-1}}{\Delta x} + \frac{w^{n+1}_{i+1,k} - w^{n+1}_{i,k}}{\Delta z} = 0
+$$
+Substituting our velicites in terms of $\Delta q$, $u^*$, and $w^*$, and simplify some, we get the poisson equation.
+$$
+a_e \Delta q^{n+1}_{i, k+1} + a_w \Delta q^{n+1}_{i, k-1} + a_b \Delta q^{n+1}_{i+1, k} + a_e \Delta q^{n+1}_{i-1, k} - a_0 \Delta q^{n+1}_{i, k} = q^*_{i,k}
+$$</p>
+<p>Where $a_e = a_w = \Delta z / \Delta x$, $a_t = a_b = \Delta x / \Delta z$, $a_0 = a_w + a_e + a_t + a_b$, and 
+$$
+q^*_{i,k} = \frac{\rho_0}{\Delta t} \left[ (u^*_{i,k} - u^*_{i,k-1})\Delta y + (w^*_{i,k} - w^*_{i+1,k})\Delta x \right]
+$$</p>
+<p>Note that if $\Delta z = \Delta x$ We have the familiar Poisson equation for an equal step size length. Alas, it is better to model the dynamics using a finer spacing in the $z$ direction.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Here I'm going to take us on a tangent that will hopefully link implementation with theory. Let's take a hard look at the Poisson equation.</p>
+<p>$$
+a_e \Delta q^{n+1}_{i, k+1} + a_w \Delta q^{n+1}_{i, k-1} + a_b \Delta q^{n+1}_{i+1, k} + a_e \Delta q^{n+1}_{i-1, k} - a_0 \Delta q^{n+1}_{i, k} = q^*_{i,k}
+$$
+We can model this as a system of equations
+$$
+A\Delta q^{n+1}_{i, k} = q^*_{i,k}
+$$
+Where A is a non-symmetric but positive definate matrix. You can build this matrix using the python code below.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse</span> <span class="k">as</span> <span class="nn">sp</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+<span class="o">%</span><span class="k">load_ext</span> pygments_magic
+
+<span class="k">def</span> <span class="nf">build_a_matrix</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dz</span><span class="p">):</span>
+    <span class="n">cw</span> <span class="o">=</span> <span class="n">dx</span><span class="o">/</span><span class="n">dz</span>
+    <span class="n">ce</span> <span class="o">=</span> <span class="n">cw</span>
+    <span class="n">ct</span> <span class="o">=</span> <span class="n">dz</span><span class="o">/</span><span class="n">dx</span>
+    <span class="n">cb</span> <span class="o">=</span> <span class="n">ct</span>
+    <span class="n">co</span> <span class="o">=</span> <span class="n">cw</span> <span class="o">+</span> <span class="n">ce</span> <span class="o">+</span> <span class="n">ct</span> <span class="o">+</span> <span class="n">cb</span>
+
+    <span class="n">ntot</span> <span class="o">=</span> <span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">nz</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">topbun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">ntot</span><span class="o">-</span><span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">)))))</span>
+    <span class="n">botbun</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntot</span><span class="o">-</span><span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">1</span><span class="p">))),</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">1</span><span class="p">)))</span>
+    <span class="n">topcheese</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntot</span><span class="p">))</span>
+    
+    <span class="c1"># start building matrix</span>
+    <span class="n">row</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">topcheese</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">row</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span> <span class="p">(</span><span class="n">topbun</span><span class="p">,</span> <span class="n">topcheese</span><span class="p">)</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">nz</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">M</span> <span class="o">=</span> <span class="n">sp</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span> <span class="p">[</span><span class="n">ct</span><span class="p">,</span> <span class="n">cw</span><span class="p">,</span> <span class="o">-</span><span class="n">co</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">cb</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">nx</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">,</span> <span class="n">nx</span><span class="o">+</span><span class="mi">3</span><span class="p">,</span> <span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="o">+</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">],</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span> <span class="n">nx</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span> <span class="p">)</span> <span class="p">)</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+        <span class="c1">#mShift = 1 + (row -1)</span>
+        <span class="n">lM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="p">(</span> <span class="p">(</span><span class="n">row</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">rM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ntot</span> <span class="o">-</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">lM</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">Meat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">lM</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">rM</span><span class="p">))</span>
+        <span class="n">ham</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ham</span><span class="p">,</span><span class="n">Meat</span><span class="p">))</span>
+        <span class="n">topcheese</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntot</span><span class="p">))</span>
+        <span class="n">topcheese</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">=</span><span class="mi">1</span>
+        <span class="n">botcheese</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="n">ntot</span><span class="p">))</span>
+        <span class="n">botcheese</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">nx</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">row</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span><span class="o">=</span><span class="mi">1</span>
+        <span class="n">ham</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ham</span><span class="p">,</span><span class="n">topcheese</span><span class="p">,</span> <span class="n">botcheese</span><span class="p">))</span>
+    <span class="c1">#pdb.set_trace()</span>
+    <span class="n">ham</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ham</span><span class="p">,</span><span class="n">botbun</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ham</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For example, a 25x25 matrix with $\Delta x = 5$ and $\Delta y$ has the shape described below</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># nx and nz are the inner dimensions</span>
+<span class="n">nz</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">nx</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">dz</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">mahm</span> <span class="o">=</span> <span class="n">build_a_matrix</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">nz</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">spy</span><span class="p">(</span><span class="n">mahm</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[2]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre><matplotlib.image.axesimage at 0x7f5c76bf0b38></pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAP8AAAD8CAYAAAC4nHJkAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz
+AAALEgAACxIB0t1+/AAACwdJREFUeJzt3U+InPUdx/HPp2ov6iGS6RKsqRVyyaUrWUSolIggqZfo
+Reqh5CCsBysKXoIXvRS8qO2hCGsNyUEtAbXmIC0xCGkv0lWCRtOiyIYa1uwGD3or0W8P+wQmyc7O
+szu/ef7k+37BMM888+zMdx785DfP83z9jSNCAPL5UdsFAGgH4QeSIvxAUoQfSIrwA0kRfiCp1sJv
+e5/t/9j+wvbBtuqow/aS7U9sn7K92HY9V7J9yPaK7dND626xfdz259X9tjZrHDai3udsn6v28Snb
+D7RZ4yW2b7P9vu3PbH9q+8lqfWf3b12thN/2dZL+JOnXknZLesT27jZq2YR7I2I2IubaLmQdhyXt
+u2LdQUknImKXpBPV4644rKvrlaSXqn08GxHvNlzTKBclPR0RuyXdLenx6r/VLu/fWtoa+e+S9EVE
+fBkR/5P0F0n7W6ql9yLipKRvrli9X9KRavmIpAcbLWoDI+rtpIhYjoiPquXvJJ2RdKs6vH/raiv8
+t0r679Djr6p1XRWS3rP9oe35toupaSYilqvlryXNtFlMTU/Y/rg6LOjc12jbt0u6U9IH6uf+vQwn
+/Oq5JyJmtXaY8rjtX7Vd0GbEWg931/u4X5Z0h6RZScuSXmi3nMvZvknSm5Keiohvh5/ryf69Slvh
+PyfptqHHP63WdVJEnKvuVyS9rbXDlq47b3uHJFX3Ky3Xs6GIOB8R30fED5JeUYf2se0btBb81yLi
+rWp1r/bvetoK/78k7bL9c9s/lvQbScdaqmVDtm+0ffOlZUn3Szq98V91wjFJB6rlA5LeabGWsS4F
+qfKQOrKPbVvSq5LORMSLQ0/1av+ux239X33VpZw/SLpO0qGI+H0rhYxh+w6tjfaSdL2k17tWq+03
+JO2VtF3SeUnPSvqrpKOSdko6K+nhiOjESbYR9e7V2lf+kLQk6bGhY+rW2L5H0j8kfSLph2r1M1o7
+7u/k/q2rtfADaBcn/ICkCD+QFOEHkiL8QFKEH0iq1fD3qFVWUr/q7VOtUr/q7VOtG2l75O/bTuxT
+vX2qVepXvX2qdaS2ww+gJY02+dge+2Z79uxpopQtWV1d1WAwaLuMWvpUq9Svertc69LSki5cuOA6
+214/yRvZ3ifpj1pr0f1zRDw/yetJ0uJi5ybKAXpjbq7+XDNb/trf09l4AFQmOeZnNh6gxyYJf63Z
+eGzP217s4sSXQGYTHfPXERELkhakeif8ADRjkpG/V7PxALjcJOHvzWw8AK625fBHxEVJv5P0d61N
+Z3w0Ij7d6G/27NmjiNjwZnvDG4AyJjrmr35YoSs/rgBgE2jvBZIi/EBShB9IivADSRF+ICnCDyQ1
+9fbezRo3v0Cda/38EAkwHiM/kBThB5Ii/EBShB9IivADSRF+ICnCDyRF+IGkOtfkM06dBh4agYDx
+GPmBpAg/kBThB5Ii/EBShB9IivADSRF+ICnCDyTVuyafOmgEAsZj5AeSIvxAUoQfSIrwA0kRfiAp
+wg8kRfiBpAg/kNQ12eRTR4lGIJqA0GcThd/2kqTvJH0v6WJEzJUoCsD0lRj5742ICwVeB0CDOOYH
+kpo0/CHpPdsf2p4vURCAZkz6tf+eiDhn+yeSjtv+d0ScHN6g+kdhXpJ27tw54dsBKGWikT8izlX3
+K5LelnTXOtssRMRcRMwNBoNJ3g5AQVsOv+0bbd98aVnS/ZJOlyoMwHRN8rV/RtLb1bXw6yW9HhF/
+m7SgPl1brzMhSB1NfSYmMMGwLYc/Ir6U9IuCtQBoEJf6gKQIP5AU4QeSIvxAUoQfSIrwA0kRfiCp
+zk3mMa7JpMlGlRK11NFUYxMTmGAYIz+QFOEHkiL8QFKEH0iK8ANJEX4gKcIPJEX4gaQ61+QzTolG
+lbqv01QtJV6jS41NNAL1AyM/kBThB5Ii/EBShB9IivADSRF+ICnCDyTVu+v8dXTpOnOJWkpNGlJC
+l/YtJsPIDyRF+IGkCD+QFOEHkiL8QFKEH0iK8ANJEX4gqWuyyeda06UJTHDtYOQHkhobftuHbK/Y
+Pj207hbbx21/Xt1vm26ZAEqrM/IflrTvinUHJZ2IiF2STlSPAfTI2PBHxElJ31yxer+kI9XyEUkP
+Fq4LwJRt9Zh/JiKWq+WvJc2M2tD2vO1F24urq6tbfDsApU18wi/WTiGPPI0cEQsRMRcRc4PBYNK3
+A1DIVsN/3vYOSaruV8qVBKAJWw3/MUkHquUDkt4pUw6Apoxt8rH9hqS9krbb/krSs5Kel3TU9qOS
+zkp6eJpFdlXfGmtKzAjU1Ofp277to7Hhj4hHRjx1X+FaADSIDj8gKcIPJEX4gaQIP5AU4QeSIvxA
+UoQfSIqZfCbQpRl2StVS4jW69HloBBqNkR9IivADSRF+ICnCDyRF+IGkCD+QFOEHkuI6/5SVuF5d
+6lo1vQDTq6WPGPmBpAg/kBThB5Ii/EBShB9IivADSRF+ICnCDyRFk08HdKnJpEQtJRqFSunSvu0a
+Rn4gKcIPJEX4gaQIP5AU4QeSIvxAUoQfSIrwA0nR5IPiujR7EUYbO/LbPmR7xfbpoXXP2T5n+1R1
+e2C6ZQIorc7X/sOS9q2z/qWImK1u75YtC8C0jQ1/RJyU9E0DtQBo0CQn/J6w/XF1WLCtWEUAGrHV
+8L8s6Q5Js5KWJb0wakPb87YXbS+urq5u8e0AlLal8EfE+Yj4PiJ+kPSKpLs22HYhIuYiYm4wGGy1
+TgCFbSn8tncMPXxI0ulR2wLoprHX+W2/IWmvpO22v5L0rKS9tmclhaQlSY9NsUYAUzA2/BHxyDqr
+X51CLZiyPv10VanZgJr6PH3at5fQ3gskRfiBpAg/kBThB5Ii/EBShB9IivADSTGZRyJdmmRj3OuU
+us7f1PX3Evu2VC11MfIDSRF+ICnCDyRF+IGkCD+QFOEHkiL8QFKEH0iKJh9cpkTzTZeaZuroSmNT
+k7VIjPxAWoQfSIrwA0kRfiApwg8kRfiBpAg/kBThB5KiyQeb0qVfnSlVS6lmoRKYyQfA1BF+ICnC
+DyRF+IGkCD+QFOEHkiL8QFJc50d6XZnApGmM/EBSY8Nv+zbb79v+zPantp+s1t9i+7jtz6v7bdMv
+F0ApdUb+i5Kejojdku6W9Ljt3ZIOSjoREbsknageA+iJseGPiOWI+Kha/k7SGUm3Stov6Ui12RFJ
+D06rSADlbeqY3/btku6U9IGkmYhYrp76WtLMiL+Zt71oe3F1dXWCUgGUVDv8tm+S9KakpyLi2+Hn
+Yu1U57qnOyNiISLmImJuMBhMVCyAcmqF3/YNWgv+axHxVrX6vO0d1fM7JK1Mp0QA01DnbL8lvSrp
+TES8OPTUMUkHquUDkt4pXx6AaanT5PNLSb+V9IntU9W6ZyQ9L+mo7UclnZX08HRKBNpV6teDutYI
+NDb8EfFPSaM+2X1lywHQFDr8gKQIP5AU4QeSIvxAUoQfSIrwA0kRfiApZvIBCuhjIxAjP5AU4QeS
+IvxAUoQfSIrwA0kRfiApwg8kRfiBpGjyARpSohGoZBMQIz+QFOEHkiL8QFKEH0iK8ANJEX4gKcIP
+JMV1fqBDxl3HrzMhSF2M/EBShB9IivADSRF+ICnCDyRF+IGkCD+QFOEHknKTvxBie1XS2aFV2yVd
+aKyAyfWp3j7VKvWr3i7X+rOIGNTZsNHwX/Xm9mJEzLVWwCb1qd4+1Sr1q94+1boRvvYDSRF+IKm2
+w7/Q8vtvVp/q7VOtUr/q7VOtI7V6zA+gPW2P/ABaQviBpAg/kBThB5Ii/EBS/wf8iFdSecwSagAA
+AABJRU5ErkJggg==
+" />
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$A$ quickly becomes a large matrix, i.e. for a $nz x nx$ domain, $A \in \mathbb{R}^{nx*nz \ x \ nx*nz}$. Kaempf's work avoids writing out this matrix by keeping the domain in a compact Arakawa C grid form. While this reduces matrix multiplication to a double for loop of interior points ie</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/poisson-c-grid.f90
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-black-intense-fg ansi-bold">! File poisson-c-grid.f90</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span>Ax(i,k) = at(i,k)*x(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) + ab(i,k)*x(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) + aw(i,k)*x(i,k-<span class="ansi-blue-intense-fg ansi-bold">1</span>) + ae(i,k)*x(i,k+<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="alt text" src="figures/above-Arakawa-C-grid-for-space-differences-below-sheme-for-time-stepping.png" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The boundaries of x are setup before hand. We are allowed to have non-symmetric matrices by having the wet boolean pointer. We will use this in one of our problems.</p>
+<p>However easy to implement, it is difficult to precondition your Arakawa C grid. Nevertheless, we are going to keep using the Arakawa C grid form for now.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Solving-the-Poisson-equation-numerically">Solving the Poisson equation numerically<a class="anchor-link" href="#Solving-the-Poisson-equation-numerically">¶</a></h2><h3 id="SOR:">SOR:<a class="anchor-link" href="#SOR:">¶</a></h3><p>SOR is just a Gauss Sidel iteraion that accelerates the step by $\omega$ usually between 1.2 and 1.4. The Poisson equation is expressed by
+$$
+\Delta q^{r+1}_{i,k} = (1- \omega)\Delta q^{r+1}_{i,k} - \frac{\omega}{a_0}q^*_{i,k} + \frac{\omega}{a_0}\left( a_e \Delta q^{r+1}_{i, k+1} + a_w \Delta q^{r}_{i, k-1} + a_b \Delta q^{r+1}_{i+1, k} + a_e \Delta q^{r}_{i-1, k} \right)
+$$
+where $r$ is the SOR iteration. Once $|\Delta q^{r+1}_{i,k} - \Delta q^{r}_{i,k}|$ is small enough, we can make the substitution $r=n$. Here we set $\Delta q^{r=0}_{i,k} = \Delta q^{n}_{i,k}$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Below is a snip of the FORTRAN90 code used to implement this method.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/sor.f90
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-black-intense-fg ansi-bold">!*****************</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>nsor = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nstop
+<span class="ansi-black-intense-fg ansi-bold">!*****************</span>
+perr = <span class="ansi-blue-intense-fg ansi-bold">0.0</span>
+<span class="ansi-black-intense-fg ansi-bold">! STEP 1: predict pressure correction</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+ <span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+<span class="ansi-blue-intense-fg ansi-bold"> </span>q1 = dq(i,k)
+ term1 = qstar(i,k) + & 
+  &      at(i,k)*dq(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) + ab(i,k)*dq(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) + & 
+  &      aw(i,k)*dq(i,k-<span class="ansi-blue-intense-fg ansi-bold">1</span>) + ae(i,k)*dq(i,k+<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+ q2 = (<span class="ansi-blue-intense-fg ansi-bold">1.0</span>-omega)*q1 + omega*term1/atot(i,k) 
+ dq(i,k) = q2
+ perr = <span class="ansi-cyan-intense-fg ansi-bold">MAX</span>(<span class="ansi-cyan-intense-fg ansi-bold">ABS</span>(q2-q1),perr)
+ <span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(perr <= peps)<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+<span class="ansi-blue-intense-fg ansi-bold">  </span>nstop = nsor
+  <span class="ansi-blue-intense-fg ansi-bold">GOTO </span><span class="ansi-blue-intense-fg ansi-bold">33</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-black-intense-fg ansi-bold">!********************</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-black-intense-fg ansi-bold">!********************</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Using-Fortran-in-Python">Using Fortran in Python<a class="anchor-link" href="#Using-Fortran-in-Python">¶</a></h3><p>You can call me old-fashioned. I prefer big band music, I wear my pants up to my chest, and I like my code written in Fortran. These new-fangled programming languages are too abstract. To many oop do-hickies and the like. All balderdash! A good numerical solver like the Conjugate Gradient is best written in a lower level language.</p>
+<p>Imagine my delight upon discovering the f2py module. Now you can run Fortran in a python environment. Below is a routine called myCGf that behaves just like our beloved Fortran subroutine. This is the number cruncher. You compile the code and create a python wrapper using the bash command:</p>
+<p>$f2py -L/usr/local/lib/libblas.a --debug-capi -c CG.f90 -m myCG</p>
+<p>Once that's over, you load the myCG library and run it like any other python function.</p>
+<p>Below is an example of how I pass in parameters to a Fortran subroutine. You state what you want in your python environment by including comments with an f2py prefix.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/CG.f90
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-black-intense-fg ansi-bold">! File myCG.f90</span>
+<span class="ansi-blue-intense-fg ansi-bold">MODULE </span>myCG
+<span class="ansi-blue-intense-fg ansi-bold">CONTAINS</span>
+<span class="ansi-blue-intense-fg ansi-bold">SUBROUTINE </span>myCGf(v, f, nz, ny, dx, dy, eps)
+<span class="ansi-blue-intense-fg ansi-bold">implicit </span><span class="ansi-blue-intense-fg ansi-bold">none</span>
+<span class="ansi-cyan-intense-fg ansi-bold">integer</span>, <span class="ansi-blue-intense-fg ansi-bold">intent</span>(in) <span class="ansi-blue-intense-fg ansi-bold">::</span> nz, ny
+<span class="ansi-cyan-intense-fg ansi-bold">real</span> (<span class="ansi-cyan-intense-fg ansi-bold">kind</span>=<span class="ansi-blue-intense-fg ansi-bold">8</span>), <span class="ansi-blue-intense-fg ansi-bold">intent</span>(in) <span class="ansi-blue-intense-fg ansi-bold">::</span> dx,dy
+<span class="ansi-cyan-intense-fg ansi-bold">real</span> (<span class="ansi-cyan-intense-fg ansi-bold">kind</span>=<span class="ansi-blue-intense-fg ansi-bold">8</span>), <span class="ansi-blue-intense-fg ansi-bold">dimension</span>(<span class="ansi-blue-intense-fg ansi-bold">0</span>:(nz+<span class="ansi-blue-intense-fg ansi-bold">1</span>),<span class="ansi-blue-intense-fg ansi-bold">0</span>:(ny+<span class="ansi-blue-intense-fg ansi-bold">1</span>)), <span class="ansi-blue-intense-fg ansi-bold">intent</span>(inout)<span class="ansi-blue-intense-fg ansi-bold">::</span> v
+<span class="ansi-cyan-intense-fg ansi-bold">real</span> (<span class="ansi-cyan-intense-fg ansi-bold">kind</span>=<span class="ansi-blue-intense-fg ansi-bold">8</span>), <span class="ansi-blue-intense-fg ansi-bold">dimension</span>(<span class="ansi-blue-intense-fg ansi-bold">0</span>:(nz+<span class="ansi-blue-intense-fg ansi-bold">1</span>),<span class="ansi-blue-intense-fg ansi-bold">0</span>:(ny+<span class="ansi-blue-intense-fg ansi-bold">1</span>)), <span class="ansi-blue-intense-fg ansi-bold">intent</span>(in) <span class="ansi-blue-intense-fg ansi-bold">::</span> f
+<span class="ansi-cyan-intense-fg ansi-bold">real</span> (<span class="ansi-cyan-intense-fg ansi-bold">kind</span>=<span class="ansi-blue-intense-fg ansi-bold">8</span>), <span class="ansi-blue-intense-fg ansi-bold">intent</span>(in) <span class="ansi-blue-intense-fg ansi-bold">::</span> eps
+<span class="ansi-cyan-intense-fg ansi-bold">real</span> (<span class="ansi-cyan-intense-fg ansi-bold">kind</span>=<span class="ansi-blue-intense-fg ansi-bold">8</span>), <span class="ansi-blue-intense-fg ansi-bold">dimension</span>(<span class="ansi-blue-intense-fg ansi-bold">0</span>:(nz+<span class="ansi-blue-intense-fg ansi-bold">1</span>),<span class="ansi-blue-intense-fg ansi-bold">0</span>:(ny+<span class="ansi-blue-intense-fg ansi-bold">1</span>)) <span class="ansi-blue-intense-fg ansi-bold">::</span> q, r, rho
+<span class="ansi-cyan-intense-fg ansi-bold">real</span> (<span class="ansi-cyan-intense-fg ansi-bold">kind</span>=<span class="ansi-blue-intense-fg ansi-bold">8</span>), <span class="ansi-blue-intense-fg ansi-bold">external</span> <span class="ansi-blue-intense-fg ansi-bold">::</span> dnrm2, ddot
+<span class="ansi-cyan-intense-fg ansi-bold">real</span> (<span class="ansi-cyan-intense-fg ansi-bold">kind</span>=<span class="ansi-blue-intense-fg ansi-bold">8</span>) <span class="ansi-blue-intense-fg ansi-bold">::</span> r2, beta, alpha, r2New
+<span class="ansi-cyan-intense-fg ansi-bold">integer</span> <span class="ansi-blue-intense-fg ansi-bold">::</span> i,k
+<span class="ansi-cyan-intense-fg ansi-bold">integer</span> <span class="ansi-blue-intense-fg ansi-bold">::</span> ntot, nout
+<span class="ansi-black-intense-fg ansi-bold">! Tell f2py what is input and output</span>
+<span class="ansi-black-intense-fg ansi-bold">!f2py intent(in) :: f, nz, ny, dx, dy, eps</span>
+<span class="ansi-black-intense-fg ansi-bold">!f2py intent(out) :: V</span>
+nout=<span class="ansi-blue-intense-fg ansi-bold">0</span>
+ntot = (nz+<span class="ansi-blue-intense-fg ansi-bold">2</span>)*(ny+<span class="ansi-blue-intense-fg ansi-bold">2</span>)
+
+<span class="ansi-black-intense-fg ansi-bold">! CG stuff happens here</span>
+<span class="ansi-black-intense-fg ansi-bold">! v is updated and returned in the python environment</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">SUBROUTINE</span>
+
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">MODULE</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="After-Convergence:">After Convergence:<a class="anchor-link" href="#After-Convergence:">¶</a></h3><p>Upon convergence, we use dynamic pressure $\Delta q^{n}_{i,k}$ to update velocities $u^{n+1}_{i,k}$, and $w^{n+1}_{i,k}$</p>
+<p>$$
+u^{r+1}_{i,k} = u^*_{i,k} - \frac{\Delta t}{\rho_0 \Delta x}\left(\Delta q^{r+1}_{i, k+1} - \Delta q^{r+1}_{i,k} \right)
+$$</p>
+<p>$$
+w^{r+1}_{i,k} = w^*_{i,k} - \frac{\Delta t}{\rho_0 \Delta z}\left(\Delta q^{r-1}_{i, k+1} - \Delta q^{r+1}_{i,k} \right)
+$$</p>
+<p>We also need to update the surface pressure $\Delta q^{n+1}_{0, k}$. Recall our equation for surface pressure $q_s$</p>
+<p>$$
+\frac{\partial q_s}{\partial t} = -\rho_0 g \frac{\partial h(u)}{\partial x} 
+$$</p>
+<p>We are now going to solve for this discretely.</p>
+<p>$$
+\Delta q^{r+1}_{0, k} = q^{r+1}_{0, k} - q^{n}_{0, k} = -\frac{g \rho_0 \Delta t}{\Delta x}\left(u^{r+1}_{sum,k} - u^{r+1}_{sum,k} \right)
+$$</p>
+<p>Where $u^{r+1}_{sum,k}$ is the vertically integrated horizontal velocity</p>
+<p>$$
+u^{r+1}_{sum,k} = \sum_{i=0}^{nx+1}u^{r+1}_{i,k}\Delta z
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="CG:">CG:<a class="anchor-link" href="#CG:">¶</a></h3><p>Conjugate gradient works only for symmetric matrices, and cannot be used when the simulation has bathymetry. Still, we can use it for four of the five simulations covered. The FORTRAN code below is the generic implementation, injected in Kaempf's code.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/cg.f90
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-black-intense-fg ansi-bold">! STEP 4: CG. ITERATION</span>
+<span class="ansi-black-intense-fg ansi-bold">! Init r and p, and q</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">0</span>,nz + <span class="ansi-blue-intense-fg ansi-bold">1</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">0</span>,nx + <span class="ansi-blue-intense-fg ansi-bold">1</span>
+rr(i,k) = <span class="ansi-blue-intense-fg ansi-bold">0</span>
+pp(i,k) = <span class="ansi-blue-intense-fg ansi-bold">0</span>
+qq(i,k) = <span class="ansi-blue-intense-fg ansi-bold">0</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+rr(i,k) = qstar(i,k) + ab(i,k)*dq(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>, k) + at(i,k)*dq(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>, k) + ae(i,k)*dq(i, k+<span class="ansi-blue-intense-fg ansi-bold">1</span>) + aw(i,k)*dq(i, k-<span class="ansi-blue-intense-fg ansi-bold">1</span>) - atot(i,k)*dq(i,k)
+pp(i,k) = rr(i,k)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+qq(i,k) = atot(i,k)*rr(i,k) - ab(i,k)*rr(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - at(i,k)*rr(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - ae(i,k)*rr(i,k+<span class="ansi-blue-intense-fg ansi-bold">1</span>) - aw(i,k)*rr(i, k-<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+
+r2 = ddot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+alpha = r2 / ddot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(pp, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(qq, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+<span class="ansi-black-intense-fg ansi-bold">! STEP 4.2: solve for dq using CG</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span><span class="ansi-blue-intense-fg ansi-bold">WHILE</span> ( r2 > eps )
+nstop = nstop + <span class="ansi-blue-intense-fg ansi-bold">1</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+dq(i, k) = dq(i, k) + alpha * pp(i,k)
+rr(i, k) = rr(i,k) - alpha * qq(i,k)
+
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+r2New = ddot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+beta = r2New/r2
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+
+pp(i,k) = rr(i,k) + beta * pp(i,k)
+qq(i,k) = atot(i,k)*rr(i,k) - ab(i,k)*rr(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - at(i,k)*rr(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - ae(i,k)*rr(i,k+<span class="ansi-blue-intense-fg ansi-bold">1</span>) - aw(i,k)*rr(i, k-<span class="ansi-blue-intense-fg ansi-bold">1</span>) + beta*qq(i,k)
+
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+r2 = r2New
+alpha = r2New / ddot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(pp, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(qq, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Density-driven-flow">Density-driven flow<a class="anchor-link" href="#Density-driven-flow">¶</a></h2><p>Here we have a dense fluid starting on our left. The fluid will naturally diffuse, driven by gravity, and mix. We no longer use the simplified NSE. Instead, we need to model advection terms. Fortunately, the Poisson matrix isn't affected, only the right-hand side $q*_{i,k}$ is changed. Kaempf gives a derivation for $q^*_{i,k}$ in his book, and provides code that implements this scheme.
+$$
+A\Delta q^{n+1}_{i, k} = q^*_{i,k}
+$$
+An example problem has a dense plume starting on the left side of a tank of water. As time passes, this plume diffuses into the surrounding domain.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="Alt Text" src="./figures/ddf-cg.gif" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The domain can have a bathymetry. Here we include a ramp, followed by a wall. Bathymetry makes our matrix non-symmetric. Our conjugate gradient method no longer works. Instead, we use the BICGSTAB method.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="Alt Text" src="./figures/ddf-bicgstab-ramp.gif" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="BICGSTAB:">BICGSTAB:<a class="anchor-link" href="#BICGSTAB:">¶</a></h3><p>Below is the generic FORTRAN code used for non-symmetric matrices.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/bicgstab.f90
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre><span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+rr(i,k) = qstar(i,k) + ab(i,k)*dq(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>, k) + at(i,k)*dq(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>, k) + ae(i,k)*dq(i, k+<span class="ansi-blue-intense-fg ansi-bold">1</span>) + aw(i,k)*dq(i, k-<span class="ansi-blue-intense-fg ansi-bold">1</span>) - atot(i,k)*dq(i,k)
+pp(i,k) = rr(i,k)
+rrstar(i,k) = rr(i,k)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+qq(i,k) = atot(i,k)*rr(i,k) - ab(i,k)*rr(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - at(i,k)*rr(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - ae(i,k)*rr(i,k+<span class="ansi-blue-intense-fg ansi-bold">1</span>) - aw(i,k)*rr(i, k-<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+rtrstar = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rrstar, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+r2 = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+alphaden = <span class="ansi-cyan-intense-fg ansi-bold">dot_product</span>(<span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(qq, [nTot]), <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rrstar, [nTot]))
+alpha = rtrstar / alphaden
+r2norm = snrm2(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]),<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+
+<span class="ansi-black-intense-fg ansi-bold">! STEP 4.2: solve for dq using CG</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span><span class="ansi-blue-intense-fg ansi-bold">WHILE</span> ( r2norm > eps )
+nstop = nstop + <span class="ansi-blue-intense-fg ansi-bold">1</span>
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+ss(i, k) = rr(i, k) - alpha * qq(i,k)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+ee(i, k) = atot(i,k)*ss(i,k) - ab(i,k)*ss(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - at(i,k)*ss(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - ae(i,k)*ss(i,k+<span class="ansi-blue-intense-fg ansi-bold">1</span>) - aw(i,k)*ss(i, k-<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+omeganum = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(ee, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(ss, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+omegaden = <span class="ansi-cyan-intense-fg ansi-bold">dot_product</span>(<span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(ee, [nTot]), <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(ee, [nTot]))
+omega = omeganum/omegaden
+
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+dq(i, k) = dq(i, k) + alpha * pp(i, k) + omega * ss(i, k)
+rrnew(i, k) = ss(i, k) - omega * ee(i, k)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+betanum = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rrnew, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rrstar, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+betaden = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rrstar, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+beta = (alpha/omega) * (betanum/ betaden)
+
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+pp(i,k) = rrnew(i, k) + beta * (pp(i, k) - omega * qq(i, k))
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+r2norm = snrm2(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]),<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>i = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nz
+<span class="ansi-blue-intense-fg ansi-bold">DO </span>k = <span class="ansi-blue-intense-fg ansi-bold">1</span>,nx
+<span class="ansi-blue-intense-fg ansi-bold">IF</span>(wet(i,k))<span class="ansi-blue-intense-fg ansi-bold">THEN</span>
+qq(i,k) = atot(i,k)*pp(i,k) - ab(i,k)*pp(i+<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - at(i,k)*pp(i-<span class="ansi-blue-intense-fg ansi-bold">1</span>,k) - ae(i,k)*pp(i,k+<span class="ansi-blue-intense-fg ansi-bold">1</span>) - aw(i,k)*pp(i, k-<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+rr(i,k) = rrnew(i,k)
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+rtrstar = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rrstar, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+r2 = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+alphaden = sdot(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(qq, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rrstar, [nTot]), <span class="ansi-blue-intense-fg ansi-bold">1</span>)
+alpha = rtrstar / alphaden
+r2norm = snrm2(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>(rr, [nTot]),<span class="ansi-blue-intense-fg ansi-bold">1</span>)
+
+<span class="ansi-blue-intense-fg ansi-bold">EXIT</span>
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">IF</span>
+
+<span class="ansi-blue-intense-fg ansi-bold">END </span><span class="ansi-blue-intense-fg ansi-bold">DO</span>
+
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Kelvin-Helmholtz-Instability">Kelvin Helmholtz Instability<a class="anchor-link" href="#Kelvin-Helmholtz-Instability">¶</a></h2><p>We return to using a symmetric matrix; Here we have two fluid bodies moving relative to one another. Friction between the two surfaces will eventually mix and merge, forming a sub-layer. If we wait long enough, the process repeats itself with the middle layer.</p>
+<p>In or in pictures...</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="Alt Text" src="./figures/SOR-KH.gif" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Convection">Convection<a class="anchor-link" href="#Convection">¶</a></h2><p>Changes on the ocean surface, either by freshwater or evaporation cause a stratified fluid to mix. This simulation models density with the inclusion of energy leaving the surface. As the surface cools, seawater contracts and sinks.</p>
+<p>Density initial conditions are described by
+$$
+\rho(z) = \rho_0 ( 1 + \frac{N^2}{g} |z|)
+$$
+$N^2$ is the Brunt-Väisälä frequency, set to $10^-6$, $g$ is gravity.
+The density change over time at the surface is characterized by
+$$
+\frac{\partial \rho_s}{\partial t} = \frac{\alpha Q}{ C_p \Delta z}
+$$</p>
+<p>$C_p$ is specific heat, Q is set to $600 W/m^2$, $\alpha$ is the thermal expansion coefficient.</p>
+<p>Evaporation by sunlight can cause the upper ocean to mix; here we model this by slowly adding energy to the surface.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><img alt="Alt Text" src="./figures/SOR-CONV.gif" /></p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Results-table:">Results table:<a class="anchor-link" href="#Results-table:">¶</a></h2><p>How much faster are using CG and BICGSTAB? Most cases better, but not at the amounts we have seen in class. Solving these simulations involves a lot of 'setting up' before solving the numerical PDE. One instance is that the 'wet' boolean if statement taking a large chunk of time...</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<table>
+<thead><tr>
+<th>Problem</th>
+<th>Method</th>
+<th>Total steps</th>
+<th>Time</th>
+<th>Step Percent difference</th>
+<th>Time Percent difference</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Density Driven Flow</td>
+<td>SOR</td>
+<td>7066</td>
+<td>0.387</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Density Driven Flow</td>
+<td>CG</td>
+<td>5173</td>
+<td>0.333</td>
+<td>-26.790</td>
+<td>-14.172</td>
+</tr>
+<tr>
+<td>DDF With Ramp</td>
+<td>SOR</td>
+<td>7266</td>
+<td>0.444</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>DDF With Ram</td>
+<td>BICGSTAB</td>
+<td>7066</td>
+<td>0.680</td>
+<td>-2.753</td>
+<td>53.253</td>
+</tr>
+<tr>
+<td>Surface Pressure Waves</td>
+<td>SOR</td>
+<td>15047</td>
+<td>1.007</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Surface Pressure Waves</td>
+<td>CG</td>
+<td>8538</td>
+<td>0.420</td>
+<td>-43.258</td>
+<td>-58.294</td>
+</tr>
+<tr>
+<td>Kelvin-Helmholtz</td>
+<td>SOR</td>
+<td>12234</td>
+<td>1.032</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Kelvin-Helmholtz</td>
+<td>CG</td>
+<td>12429</td>
+<td>0.905</td>
+<td>1.594</td>
+<td>-12.307</td>
+</tr>
+<tr>
+<td>Convection</td>
+<td>SOR</td>
+<td>6980</td>
+<td>0.735</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Convection</td>
+<td>CG</td>
+<td>1766</td>
+<td>0.596</td>
+<td>-74.699</td>
+<td>-18.874</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Discussion-and-Conclusion:">Discussion and Conclusion:<a class="anchor-link" href="#Discussion-and-Conclusion:">¶</a></h2><p>The scope of this project was to improve existing code, swapping out the SOR solver with a better method. Including PC involve rewriting the problem to use sparse matrices instead of the Arakawa C-grid. Given the number of simulations, I wanted to cover, Implementing preconditioning was outside the scope of the assignment.</p>
+<p>Improvement will be made by redoing the simulations using a sparse matrix so that you can experiment with preconditioners. You can apply topography and bathymetry to the symmetric Poisson matrix by multiplying wet pointer array to the matrix.</p>
+<p>I can't help but regret my decision to inherit the Arakawa C framework. Expressing our grid in Matrix form allows further experimentation with different preconditioners. Applying bathymetry to the matrix makes it non-symmetric, where we can use the BICGSTAB algorithm. How much better and faster could I have sped up these simulations? Sure, I couldn't have made as many pictures, but I missed the opportunity of peeking at whats around the corner.</p>
+<p>I'm going to ask you a somewhat cliche question: Which method is best? I started out this project thinking CG is better, yet I found in some cases it performed worse. Still convinced?</p>
+<p>There is something to say about a method that always works. For the case of NSE, a numerical method that can solve a wide variety of equations, in a compact, intuitive, flexible way is alluring, even elegant. The scope of the work is on ocean modeling, and the fact that Kaempf ties all these simulations together with SOR made an impression on me. On the other hand, I still think I'd like to toy around with different methods. When I have a little more time, I will revisit this project and find out.</p>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        Tyler Tucker
+    </span>
+  </span>
+<time datetime="2018-05-03T23:00:00-07:00" pubdate>Thu 03 May 2018</time>  <span class="categories">
+    <a class='category' href='./category/math.html'>Math</a>
+  </span>
+  <span class="categories">
+    <a class="category" href="./tag/python.html">python</a>,    <a class="category" href="./tag/fortran.html">fortran</a>,    <a class="category" href="./tag/ocean-modeling.html">ocean modeling</a>  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="./ns-eq-cg.html">Python Time Series Fit</a>
+      </li>
+      <li class="post">
+          <a href="./Baysean-Predict-Post.html">Bayesian Predictive Posterior for Normal Distribution using SIR prior</a>
+      </li>
+      <li class="post">
+          <a href="./Taylor-Series.html">Taylor Series</a>
+      </li>
+      <li class="post">
+          <a href="./argovis-python-api.html">argovis Python API</a>
+      </li>
+      <li class="post">
+          <a href="./python-time-series-fit.html">Python Time Series Fit</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="./category/about.html">about</a></li>
+        <li><a href="./category/argo.html">ARGO</a></li>
+        <li><a href="./category/ims.html">IMS</a></li>
+        <li><a href="./category/math.html">Math</a></li>
+        <li><a href="./category/python.html">Python</a></li>
+        <li><a href="./category/statistics.html">Statistics</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="http://kargaaad.blogspot.com/" target="_blank">In my past life, I taught English in the Republic of Georgia</a></li>
+            <li><a href="https://sites.google.com/a/eng.ucsd.edu/156b-2012-winter-team17/" target="_blank">My senior project that im still proud of</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="http://shen.sdsu.edu/research_group.html" target="_blank">My research group</a></li>
+        </ul>
+    </section>
+
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2017&ndash;2018  tyler tucker &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  <script src="./theme/js/modernizr-2.0.js"></script>
+  <script src="./theme/js/ender.js"></script>
+  <script src="./theme/js/octopress.js" type="text/javascript"></script>
+</body>
+</html>
