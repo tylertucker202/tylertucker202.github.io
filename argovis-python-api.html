@@ -1067,7 +1067,7 @@ h6:hover .anchor-link {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [31]:</div>
+<div class="prompt input_prompt">In [1]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">requests</span>
@@ -1111,7 +1111,7 @@ h6:hover .anchor-link {
 <span class="n">sns</span><span class="o">.</span><span class="n">set_palette</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">xkcd_palette</span><span class="p">(</span><span class="n">myColors</span><span class="p">))</span>
 
 <span class="n">curDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-<span class="n">docDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">curDir</span><span class="p">,</span> <span class="s1">'docs'</span><span class="p">)</span>
+<span class="n">docDir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">curDir</span><span class="p">,</span> <span class="s1">'docs'</span><span class="p">,</span> <span class="s1">'argo'</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -6596,7 +6596,7 @@ GcT+PzSuWbtYcUMUAAAAAElFTkSuQmCC
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#used for gridding purposes</span>
-<span class="n">worldGrid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'worldGridAtOneDeg.csv'</span><span class="p">)</span>
+<span class="n">worldGrid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">docDir</span><span class="p">,</span><span class="s1">'worldGridAtOneDeg.csv'</span><span class="p">))</span>
 <span class="n">worldGrid</span><span class="o">.</span><span class="n">index</span><span class="o">=</span><span class="n">worldGrid</span><span class="o">.</span><span class="n">idx</span>
 <span class="n">oceanGrid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">oceanDf</span><span class="p">[[</span><span class="s1">'nProf'</span><span class="p">,</span> <span class="s1">'aggTemp'</span><span class="p">,</span> <span class="s1">'aggPsal'</span><span class="p">]],</span> <span class="n">worldGrid</span><span class="p">[[</span><span class="s1">'lat'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">]]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">join</span><span class="o">=</span><span class="s1">'outer'</span><span class="p">)</span>
 <span class="n">oceanGrid</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -16952,6 +16952,9 @@ RU5ErkJggg==
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="./argovis-tutorials.html">Argovis Tutorials</a>
+      </li>
+      <li class="post">
           <a href="./ns-eq-cg.html">Ocean Modeling with Fortran</a>
       </li>
       <li class="post">
@@ -16962,9 +16965,6 @@ RU5ErkJggg==
       </li>
       <li class="post">
           <a href="./argovis-python-api.html">argovis Python API</a>
-      </li>
-      <li class="post">
-          <a href="./python-time-series-fit.html">Python Time Series Fit</a>
       </li>
     </ul>
   </section>
@@ -16984,7 +16984,7 @@ RU5ErkJggg==
 
   <section>
   <h1>Tags</h1>
-    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
 
 
     <section>

@@ -1045,14 +1045,14 @@ h6:hover .anchor-link {
 <div class="text_cell_render border-box-sizing rendered_html">
 <h2 id="An-explanation-of-IMS's-map-projection:">An explanation of IMS's map projection:<a class="anchor-link" href="#An-explanation-of-IMS's-map-projection:">¶</a></h2><p>I feel the need to clarify how the <a href="http://nsidc.org/data/docs/noaa/g02156_ims_snow_ice_analysis/index.html">National Ice Center's Interactive Multisensor Snow and Ice Mapping System (IMS)</a> generates their maps.</p>
 <p>But first a little background. The IMS project has been uploading zipped .asc files daily since 1997. From the start, they were using a 24x24 km grid. Since 2004, they have improved their measurement methods and process and implemented a 4x4 km resolution grid. Lastly, 2014 saw further improvements with a 1x1 km resolution map. Below is a picture was taken from their website.</p>
-<p><img src="figures/ims_earth.gif" ,width="400"></p>
+<p><img src="figures/ims/ims_earth.gif" ,width="400"></p>
 <p>One question posed is the meaning behind these resolutions. Does each cell represent an nxn km area? Spoiler alert. It doesn't. If so, what does this number signify? This following post will attempt to answer this question.</p>
 <p>Let's start with map projections. The IMS uses a Stereographic projection. All projections seek to transform a 3d surface, such as the Earth, moon, asteroid, onto a 2d surface.</p>
 <p>If you have ever tried wrapping a piece of paper around an apple (try it out now if you haven't), you will find that it is impossible to wrap it so that there are no wrinkles or bulges. A projection is a similar procedure only in reverse. And like that paper, the spheroid will have its surface areas grow and shrink accordingly. A gross example is the Mercator projection, which shows Greenland as a huge continent when in reality it's about the size of Mexico. So how does the Stereographic projection distort our Earth?</p>
 <p>The Polar Stereographic projection chooses a latitude, whose scale doesn't change. In the IMS's case, $60^{\circ}N$. The projection will dilate the points outside of it. Points below $60^{\circ}N$ are stretched further apart, and points further north are pushed closer together. What you end up with is a distorted map with a scrunched up north pole and a stretched out equator. Take a look at this projection. Africa isn't that large, right?</p>
-<p><img src="figures/stereographic_proj.JPG" ,width="400"></p>
+<p><img src="figures/ims/stereographic_proj.JPG" ,width="400"></p>
 <p>Another way of thinking about it is that we fit a sphere onto a plane tangent to the north pole. As project further away from the pole, our distance increases. See how the distance between the lines on the plane increase as the angle increases.</p>
-<p><img src="figures/sphere_proj.png" ,width="700"></p>
+<p><img src="figures/ims/sphere_proj.png" ,width="700"></p>
 <p>Let's take a look at the IMS data. Each day consists of a file of n rows and n columns. We have in effect an x,y grid, instead of a latitude-longitude (lat-lon) grid. Transforming the grid to lat-lon has the <em>reverse</em> effect. Points that are below $60^{\circ}N$ are closer together, and points above $60^{\circ}N$ are further apart. Bringing it back to the resolution, only the points that fall on $60^{\circ}N$ are what is advertised. For example, the 24x24 km data set has a resolution of 24km only at $60^{\circ}N$. Therefore, most of the distances between the points are <em>smaller</em>.</p>
 <p>This non-uniformity is a source of confusion that can lead to overestimating errors in snowfall. <a href="http://www.itsonlyamodel.us/Tibet-Snow-Man.html">This post</a> seeks to describe how the square kilometer measurements of snow and ice coverage are generated. However, it does not explain the nature of the provided projection. It instead relies on the lat-lon files provided by the IMS.</p>
 <p>I looked into how the lat-lon files were generated, and see that they rely on modeling the earth as an ellipse called the <a href="https://en.wikipedia.org/wiki/World_Geodetic_System">World Geodetic System 1984 ellipse, orWGS-84</a> for the 4x4 and 1x1 resolution sets. For those irredeemable nerds out there, I provided some derivations that help explain what is going on. All of the formulas are taken from <a href="https://pubs.er.usgs.gov/publication/pp1395">John Snyder's fantastic book on map projections</a>, I even borrowed some of his figures used earlier in this blog.</p>
@@ -1116,7 +1116,7 @@ c = 2 \ arctan(\frac{\rho}{2Rk_{0}})
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#First I import libraries</span>
@@ -1148,7 +1148,7 @@ c = 2 \ arctan(\frac{\rho}{2Rk_{0}})
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [2]:</div>
+<div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Next I define the functions, nestled in a class.</span>
@@ -1195,7 +1195,7 @@ c = 2 \ arctan(\frac{\rho}{2Rk_{0}})
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [3]:</div>
+<div class="prompt input_prompt">In [8]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#I define some points on a grid </span>
@@ -1220,7 +1220,7 @@ c = 2 \ arctan(\frac{\rho}{2Rk_{0}})
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [4]:</div>
+<div class="prompt input_prompt">In [9]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># I can now transform my grids and transform them back.</span>
@@ -1248,7 +1248,7 @@ c = 2 \ arctan(\frac{\rho}{2Rk_{0}})
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [5]:</div>
+<div class="prompt input_prompt">In [10]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#define basemap</span>
@@ -1260,7 +1260,7 @@ c = 2 \ arctan(\frac{\rho}{2Rk_{0}})
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [6]:</div>
+<div class="prompt input_prompt">In [11]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#look at xx,xx on basemap</span>
@@ -1276,9 +1276,9 @@ c = 2 \ arctan(\frac{\rho}{2Rk_{0}})
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[6]:</div>
+<div class="prompt output_prompt">Out[11]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.linecollection at 0x7f1a60bbaa20></pre>
+<pre><matplotlib.collections.linecollection at 0x7f816f2f1e80></pre>
 </div>
 </div>
 <div class="output_area">
@@ -2645,7 +2645,7 @@ wjXnxAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [7]:</div>
+<div class="prompt input_prompt">In [12]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">xx</span><span class="p">[</span><span class="nb">round</span> <span class="p">(</span><span class="n">grid_size</span><span class="o">/</span><span class="mi">2</span> <span class="p">),:]))</span>
@@ -2676,7 +2676,7 @@ wjXnxAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [8]:</div>
+<div class="prompt input_prompt">In [13]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">lat_converted</span><span class="p">[</span><span class="nb">round</span> <span class="p">(</span><span class="n">grid_size</span><span class="o">/</span><span class="mi">2</span> <span class="p">),:]))</span>
@@ -2710,7 +2710,7 @@ $$</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [9]:</div>
+<div class="prompt input_prompt">In [14]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#look at lat-lon grid on basemap</span>
@@ -2727,9 +2727,9 @@ $$</p>
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[9]:</div>
+<div class="prompt output_prompt">Out[14]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.linecollection at 0x7f1a607bcef0></pre>
+<pre><matplotlib.collections.linecollection at 0x7f816f1e9278></pre>
 </div>
 </div>
 <div class="output_area">
@@ -4112,7 +4112,7 @@ CK8tkQQFQRCE19b/A89xWTHxRGt1AAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [10]:</div>
+<div class="prompt input_prompt">In [15]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">phi_phi</span><span class="p">[</span><span class="nb">round</span> <span class="p">(</span><span class="n">grid_size</span><span class="o">/</span><span class="mi">2</span> <span class="p">),:]))</span>
@@ -4143,7 +4143,7 @@ CK8tkQQFQRCE19b/A89xWTHxRGt1AAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [11]:</div>
+<div class="prompt input_prompt">In [16]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">xx_converted</span><span class="p">[</span><span class="nb">round</span> <span class="p">(</span><span class="n">grid_size</span><span class="o">/</span><span class="mi">2</span> <span class="p">),:]))</span>
@@ -4212,7 +4212,7 @@ t_c = \left[ \left( \frac{1 - \ \frac{\sqrt{3}}{2}}{1 + \ \frac{\sqrt{3}}{2}} \r
 \lambda = \lambda_{0} + arctan(x \ / \ (-y)) \\
 \end{equation}</p>
 <p>Uh oh! Until now, we haven't encountered an expression where the left-hand side $\phi$ has itself on the right-hand side. The last equation is an implicit expression and can be solved by substituting a 'guess' into the right-hand side. Then you take that answer and put that back on the right-hand side. You repeat this process until the difference between the guess, and the next guess is effectively zero. Lucky for us, divine insight tells us to set the initial guess to be $\phi^{(0)} = \frac{\pi}{2} - 2arctan(t)$. I created a flowchart below for folks who like that sort of thing.</p>
-<p><img src="figures/implicit_iteration.png" /></p>
+<p><img src="figures/ims/implicit_iteration.png" /></p>
 <p>For a true scale constant $k$ occuring at latitude $\phi_{c} \ne 90^{\circ}$</p>
 <p>\begin{equation}
 t = \frac{\rho t_c}{a \ m_c} \\
@@ -4247,7 +4247,7 @@ k = \frac{\rho}{a m}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [12]:</div>
+<div class="prompt input_prompt">In [17]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">polar_stereographic_ellipsoid</span><span class="p">():</span>
@@ -4351,7 +4351,7 @@ k = \frac{\rho}{a m}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [13]:</div>
+<div class="prompt input_prompt">In [18]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#I define some points on a grid </span>
@@ -4378,7 +4378,7 @@ k = \frac{\rho}{a m}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [14]:</div>
+<div class="prompt input_prompt">In [19]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># I can now transform my grids and transform them back.</span>
@@ -4406,7 +4406,7 @@ k = \frac{\rho}{a m}
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [15]:</div>
+<div class="prompt input_prompt">In [20]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#look at lat-lon grid on basemap</span>
@@ -4423,9 +4423,9 @@ k = \frac{\rho}{a m}
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[15]:</div>
+<div class="prompt output_prompt">Out[20]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.linecollection at 0x7f1a60839c18></pre>
+<pre><matplotlib.collections.linecollection at 0x7f816f1adb38></pre>
 </div>
 </div>
 <div class="output_area">
@@ -5796,7 +5796,7 @@ EKqt/weOdGWAYchsHgAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [16]:</div>
+<div class="prompt input_prompt">In [21]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#look at xx,xx on basemap</span>
@@ -5812,9 +5812,9 @@ EKqt/weOdGWAYchsHgAAAABJRU5ErkJggg==
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[16]:</div>
+<div class="prompt output_prompt">Out[21]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.linecollection at 0x7f1a60678048></pre>
+<pre><matplotlib.collections.linecollection at 0x7f816f099ac8></pre>
 </div>
 </div>
 <div class="output_area">
@@ -7194,20 +7194,22 @@ wjXnxAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [17]:</div>
+<div class="prompt input_prompt">In [22]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#first I get the files and make them into nxn arrays.</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="n">lat_filename</span> <span class="o">=</span> <span class="s1">'imslat_24km.bin'</span>
-<span class="n">lon_filename</span> <span class="o">=</span> <span class="s1">'imslon_24km.bin'</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"./docs/ims/"</span><span class="p">)</span>
+<span class="n">lat_filename</span> <span class="o">=</span> <span class="s1">'docs/ims/imslat_24km.bin'</span>
+<span class="n">lon_filename</span> <span class="o">=</span> <span class="s1">'docs/ims/imslon_24km.bin'</span>
 <span class="n">grid_size</span> <span class="o">=</span> <span class="mi">1024</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="n">lat_filename</span><span class="p">),</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">lat_filename</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">lat_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>               
     <span class="n">lat_matrix</span> <span class="o">=</span> <span class="n">lat_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_size</span><span class="p">,</span><span class="n">grid_size</span><span class="p">)</span>
 
-<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span><span class="n">lon_filename</span><span class="p">),</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">lon_filename</span><span class="p">,</span> <span class="s2">"r"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">lon_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">fromfile</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">lon_matrix</span> <span class="o">=</span> <span class="n">lon_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">grid_size</span><span class="p">,</span><span class="n">grid_size</span><span class="p">)</span>
 </pre></div>
@@ -7217,7 +7219,7 @@ wjXnxAAAAABJRU5ErkJggg==
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [18]:</div>
+<div class="prompt input_prompt">In [23]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#I'm interested in showing the differences in latitude from the pole to the equator, </span>
@@ -7240,9 +7242,9 @@ wjXnxAAAAABJRU5ErkJggg==
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[18]:</div>
+<div class="prompt output_prompt">Out[23]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.collections.linecollection at 0x7f1a60baac50></pre>
+<pre><matplotlib.collections.linecollection at 0x7f816f004d30></pre>
 </div>
 </div>
 <div class="output_area">
@@ -8564,7 +8566,7 @@ AElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [19]:</div>
+<div class="prompt input_prompt">In [24]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
@@ -8580,9 +8582,9 @@ AElFTkSuQmCC
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[19]:</div>
+<div class="prompt output_prompt">Out[24]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.text at 0x7f1a5c490be0></pre>
+<pre><matplotlib.text.text at 0x7f816f07f0f0></pre>
 </div>
 </div>
 <div class="output_area">
@@ -8996,7 +8998,7 @@ F9mIZEoO6BWFAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [20]:</div>
+<div class="prompt input_prompt">In [25]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
@@ -9018,7 +9020,7 @@ F9mIZEoO6BWFAAAAAElFTkSuQmCC
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [21]:</div>
+<div class="prompt input_prompt">In [26]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
@@ -9034,9 +9036,9 @@ F9mIZEoO6BWFAAAAAElFTkSuQmCC
 <div class="output_wrapper">
 <div class="output">
 <div class="output_area">
-<div class="prompt output_prompt">Out[21]:</div>
+<div class="prompt output_prompt">Out[26]:</div>
 <div class="output_text output_subarea output_execute_result">
-<pre><matplotlib.text.text at 0x7f1a5c422550></pre>
+<pre><matplotlib.text.text at 0x7f8169db5b70></pre>
 </div>
 </div>
 <div class="output_area">
@@ -9696,6 +9698,9 @@ AGAgAnUAAADAQATqAAAAgIEI1AEAAAAD/T+xxTVCQ472DgAAAABJRU5ErkJggg==
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="./argovis-tutorials.html">Argovis Tutorials</a>
+      </li>
+      <li class="post">
           <a href="./ns-eq-cg.html">Ocean Modeling with Fortran</a>
       </li>
       <li class="post">
@@ -9706,9 +9711,6 @@ AGAgAnUAAADAQATqAAAAgIEI1AEAAAAD/T+xxTVCQ472DgAAAABJRU5ErkJggg==
       </li>
       <li class="post">
           <a href="./argovis-python-api.html">argovis Python API</a>
-      </li>
-      <li class="post">
-          <a href="./python-time-series-fit.html">Python Time Series Fit</a>
       </li>
     </ul>
   </section>
@@ -9728,7 +9730,7 @@ AGAgAnUAAADAQATqAAAAgIEI1AEAAAAD/T+xxTVCQ472DgAAAABJRU5ErkJggg==
 
   <section>
   <h1>Tags</h1>
-    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
 
 
     <section>

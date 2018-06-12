@@ -1043,8 +1043,9 @@ h6:hover .anchor-link {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Ocean-Modeling-with-the-Navier-Stokes-Equations:-or-as-I-think-of-it,--'my-missed-oppurtunity.'">Ocean Modeling with the Navier-Stokes Equations: or as I think of it,  'my missed oppurtunity.'<a class="anchor-link" href="#Ocean-Modeling-with-the-Navier-Stokes-Equations:-or-as-I-think-of-it,--'my-missed-oppurtunity.'">¶</a></h1><p>Tyler Tucker</p>
-<h2 id="Project-outline">Project outline<a class="anchor-link" href="#Project-outline">¶</a></h2><p>This work borrows heavily from Jochen Kaempf's book Advanced Ocean Modelling: Using Open-Source Software. Equations, terminology, and code are used to model physical ocean processes. Kaempf's numerical method of choice is the Successive Over-Relaxation (SOR) method. Although there are faster more efficient methods using Krylov Subspace methods, the SOR can be as an exclusive solver for non-symmetric matrices, where the latter methods may need some tweaking. Nevertheless, I am set out to see how much more efficient these methods can be.</p>
+<h1 id="Ocean-Modeling-with-the-Navier-Stokes-Equations:-or-as-I-think-of-it,--'my-missed-oppurtunity.'">Ocean Modeling with the Navier-Stokes Equations: or as I think of it,  'my missed oppurtunity.'<a class="anchor-link" href="#Ocean-Modeling-with-the-Navier-Stokes-Equations:-or-as-I-think-of-it,--'my-missed-oppurtunity.'">¶</a></h1><p>By Tyler Tucker</p>
+<h4 id="note-to-reader:-I-wrote-this-project-for-Peter-Blomgrens-MATH-793A-course-in-numerical-partial-differential-equations.-This-is-the-presentation.">note to reader: I wrote this project for Peter Blomgrens MATH 793A course in numerical partial differential equations. This is the presentation.<a class="anchor-link" href="#note-to-reader:-I-wrote-this-project-for-Peter-Blomgrens-MATH-793A-course-in-numerical-partial-differential-equations.-This-is-the-presentation.">¶</a></h4><h2 id="Project-outline">Project outline<a class="anchor-link" href="#Project-outline">¶</a></h2><p>I wrote this project for Peter Blomgrens MATH 793A course in numerical partial differential equations. This is the presentation.</p>
+<p>This work borrows heavily from Jochen Kaempf's book Advanced Ocean Modelling: Using Open-Source Software. Equations, terminology, and code are used to model physical ocean processes. Kaempf's numerical method of choice is the Successive Over-Relaxation (SOR) method. Although there are faster more efficient methods using Krylov Subspace methods, the SOR can be as an exclusive solver for non-symmetric matrices, where the latter methods may need some tweaking. Nevertheless, I am set out to see how much more efficient these methods can be.</p>
 <p>In this work, I will implement Successive over relaxation (SOR), conjugate gradient (CG), and bi-conjugate gradient stability (BICGSTAB) methods on existing numerical solutions covered in his book. The scope of the project is to swap out the SOR solver with CG and BICGSTAB for the following simulations.</p>
 <ul>
 <li>Surface Gravity Waves</li>
@@ -1091,7 +1092,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="Alt Text" src="./figures/surf-cg.gif" /></p>
+<p><img alt="Alt Text" src="./figures/cfd/surf-cg.gif" /></p>
 </div>
 </div>
 </div>
@@ -1188,7 +1189,7 @@ Where A is a non-symmetric but positive definate matrix. You can build this matr
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In [1]:</div>
+<div class="prompt input_prompt">In [2]:</div>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
@@ -1341,7 +1342,7 @@ AABJRU5ErkJggg==
 <div class="prompt input_prompt">In [3]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/poisson-c-grid.f90
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/cfd/poisson-c-grid.f90
 </pre></div>
 </div>
 </div>
@@ -1370,7 +1371,7 @@ AABJRU5ErkJggg==
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="alt text" src="figures/above-Arakawa-C-grid-for-space-differences-below-sheme-for-time-stepping.png" /></p>
+<p><img alt="alt text" src="figures/cfd/above-Arakawa-C-grid-for-space-differences-below-sheme-for-time-stepping.png" /></p>
 </div>
 </div>
 </div>
@@ -1408,7 +1409,7 @@ where $r$ is the SOR iteration. Once $|\Delta q^{r+1}_{i,k} - \Delta q^{r}_{i,k}
 <div class="prompt input_prompt">In [4]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/sor.f90
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/cfd/sor.f90
 </pre></div>
 </div>
 </div>
@@ -1465,7 +1466,7 @@ perr = <span class="ansi-blue-intense-fg ansi-bold">0.0</span>
 <div class="prompt input_prompt">In [5]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/CG.f90
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/cfd/CG.f90
 </pre></div>
 </div>
 </div>
@@ -1547,7 +1548,7 @@ $$</p>
 <div class="prompt input_prompt">In [6]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/cg.f90
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/cfd/cg.f90
 </pre></div>
 </div>
 </div>
@@ -1633,7 +1634,7 @@ An example problem has a dense plume starting on the left side of a tank of wate
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="Alt Text" src="./figures/ddf-cg.gif" /></p>
+<p><img alt="Alt Text" src="./figures/cfd/ddf-cg.gif" /></p>
 </div>
 </div>
 </div>
@@ -1649,7 +1650,7 @@ An example problem has a dense plume starting on the left side of a tank of wate
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="Alt Text" src="./figures/ddf-bicgstab-ramp.gif" /></p>
+<p><img alt="Alt Text" src="./figures/cfd/ddf-bicgstab-ramp.gif" /></p>
 </div>
 </div>
 </div>
@@ -1666,7 +1667,7 @@ An example problem has a dense plume starting on the left side of a tank of wate
 <div class="prompt input_prompt">In [7]:</div>
 <div class="inner_cell">
 <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/bicgstab.f90
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">highlight</span> figures/cfd/bicgstab.f90
 </pre></div>
 </div>
 </div>
@@ -1785,7 +1786,7 @@ r2norm = snrm2(nTot, <span class="ansi-cyan-intense-fg ansi-bold">RESHAPE</span>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="Alt Text" src="./figures/SOR-KH.gif" /></p>
+<p><img alt="Alt Text" src="./figures/cfd/SOR-KH.gif" /></p>
 </div>
 </div>
 </div>
@@ -1812,7 +1813,7 @@ $$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><img alt="Alt Text" src="./figures/SOR-CONV.gif" /></p>
+<p><img alt="Alt Text" src="./figures/cfd/SOR-CONV.gif" /></p>
 </div>
 </div>
 </div>
@@ -1987,6 +1988,9 @@ $$</p>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="./argovis-tutorials.html">Argovis Tutorials</a>
+      </li>
+      <li class="post">
           <a href="./ns-eq-cg.html">Ocean Modeling with Fortran</a>
       </li>
       <li class="post">
@@ -1997,9 +2001,6 @@ $$</p>
       </li>
       <li class="post">
           <a href="./argovis-python-api.html">argovis Python API</a>
-      </li>
-      <li class="post">
-          <a href="./python-time-series-fit.html">Python Time Series Fit</a>
       </li>
     </ul>
   </section>
@@ -2019,7 +2020,7 @@ $$</p>
 
   <section>
   <h1>Tags</h1>
-    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
 
 
     <section>
