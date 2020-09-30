@@ -1517,10 +1517,12 @@ dtype: float64</pre>
 <div class="inner_cell">
 <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">get_selection_profiles</span><span class="p">(</span><span class="n">startDate</span><span class="p">,</span> <span class="n">endDate</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">presRange</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">"https://argovis.colorado.edu/selection/profiles"</span>
-    <span class="n">url</span> <span class="o">+=</span> <span class="s2">"?startDate=</span><span class="si">{0}</span><span class="s2">&endDate=</span><span class="si">{1}</span><span class="s2">&shape=</span><span class="si">{2}</span><span class="s2">"</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">startDate</span><span class="p">,</span> <span class="n">endDate</span><span class="p">,</span> <span class="n">shape</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s1">'https://argovis.colorado.edu/selection/profiles'</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="s1">'?startDate=</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">startDate</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="s1">'&endDate;=</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">endDate</span><span class="p">)</span>
+    <span class="n">url</span> <span class="o">+=</span> <span class="s1">'&shape;=</span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">presRange</span><span class="p">:</span>
-        <span class="n">pressRangeQuery</span> <span class="o">=</span> <span class="s1">'&presRange='</span> <span class="o">+</span> <span class="n">presRange</span>
+        <span class="n">pressRangeQuery</span> <span class="o">=</span> <span class="s1">'&presRange;='</span> <span class="o">+</span> <span class="n">presRange</span>
         <span class="n">url</span> <span class="o">+=</span> <span class="n">pressRangeQuery</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
@@ -1557,7 +1559,7 @@ dtype: float64</pre>
 <div class="output_area">
 <div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>https://argovis.colorado.edu/selection/profiles?startDate=2017-9-15&endDate=2017-10-31&shape=[[[-18.6,31.7],[-18.6,37.7],[-5.9,37.7],[-5.9,31.7],[-18.6,31.7]]]&presRange=[0,30]
+<pre>https://argovis.colorado.edu/selection/profiles?startDate=2017-9-15&endDate;=2017-10-31&shape;=[[[-18.6,31.7],[-18.6,37.7],[-5.9,37.7],[-5.9,31.7],[-18.6,31.7]]]&presRange;=[0,30]
 </pre>
 </div>
 </div>
@@ -2322,7 +2324,7 @@ Adding an axes using the same arguments as a previous axes currently reuses the 
 <div class="output_area">
 <div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>https://argovis.colorado.edu/selection/profiles?startDate=2004-01-01&endDate=2017-12-31&shape=[[[-18.6,31.7],[-18.6,37.7],[-5.9,37.7],[-5.9,31.7],[-18.6,31.7]]]&presRange=[0, 30]
+<pre>https://argovis.colorado.edu/selection/profiles?startDate=2004-01-01&endDate;=2017-12-31&shape;=[[[-18.6,31.7],[-18.6,37.7],[-5.9,37.7],[-5.9,31.7],[-18.6,31.7]]]&presRange;=[0, 30]
 Selection measurements: ['cndc', 'pres', 'temp', 'psal']
 </pre>
 </div>
@@ -2391,8 +2393,8 @@ Selection measurements: ['cndc', 'pres', 'temp', 'psal']
 <span class="sd">    '''</span>
     <span class="n">baseURL</span> <span class="o">=</span> <span class="s1">'https://argovis.colorado.edu/gridding/presSlice/'</span>
     <span class="n">startDateQuery</span> <span class="o">=</span> <span class="s1">'?startDate='</span> <span class="o">+</span> <span class="n">startDate</span>
-    <span class="n">endDateQuery</span> <span class="o">=</span> <span class="s1">'&endDate='</span> <span class="o">+</span> <span class="n">endDate</span>
-    <span class="n">presRangeQuery</span> <span class="o">=</span> <span class="s1">'&presRange='</span> <span class="o">+</span> <span class="n">presRange</span>
+    <span class="n">endDateQuery</span> <span class="o">=</span> <span class="s1">'&endDate;='</span> <span class="o">+</span> <span class="n">endDate</span>
+    <span class="n">presRangeQuery</span> <span class="o">=</span> <span class="s1">'&presRange;='</span> <span class="o">+</span> <span class="n">presRange</span>
     <span class="n">url</span> <span class="o">=</span> <span class="n">baseURL</span> <span class="o">+</span> <span class="n">startDateQuery</span> <span class="o">+</span> <span class="n">endDateQuery</span> <span class="o">+</span> <span class="n">presRangeQuery</span>
     <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
     <span class="c1"># Consider any status other than 2xx an error</span>
@@ -2712,6 +2714,9 @@ Selection measurements: ['cndc', 'pres', 'temp', 'psal']
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
+          <a href="./mle-derivation.html">MLE Derivation</a>
+      </li>
+      <li class="post">
           <a href="./argovis-python-api-2.html">Argovis Python API 2</a>
       </li>
       <li class="post">
@@ -2722,9 +2727,6 @@ Selection measurements: ['cndc', 'pres', 'temp', 'psal']
       </li>
       <li class="post">
           <a href="./langley-extrapolation.html">Langley Extrapolation</a>
-      </li>
-      <li class="post">
-          <a href="./argovis-tutorials.html">Argovis Tutorials</a>
       </li>
     </ul>
   </section>
@@ -2744,7 +2746,7 @@ Selection measurements: ['cndc', 'pres', 'temp', 'psal']
 
   <section>
   <h1>Tags</h1>
-    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/r.html">R</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/r.html">R</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
 
 
     <section>

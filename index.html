@@ -61,6 +61,36 @@
   		<article>
 <header>
       <h1 class="entry-title">
+        <a href="./mle-derivation.html">MLE Derivation</a>
+      </h1>
+    <p class="meta">
+<time datetime="2020-09-29T14:00:00-07:00" pubdate>Tue 29 September 2020</time>    </p>
+</header>
+
+  <div class="entry-content">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MLE-Space-Time-Numerical-Optimization">MLE Space-Time Numerical Optimization<a class="anchor-link" href="#MLE-Space-Time-Numerical-Optimization">¶</a></h1><p>An anisotropic exponential space-time covariance function
+$$
+k(x_1 , t_1 , x_2 , t_2 ; \theta) = \phi exp(-d(x_1 , t_1 , x_2 , t_2 ))
+$$
+where the GP variance $\phi > 0$ and 
+$$
+d= 
+\sqrt{ 
+\left( \frac{x_{lat,1} - x_{lat,2}}{\theta_{lat}} \right)^2 +
+\left( \frac{x_{lon,1} - x_{lon,2}}{\theta_{lon}} \right)^2 + 
+\left( \frac{x_{t,1} - x_{t,2}}{\theta_{t}} \right)^2}
+$$</p></div>
+  <footer>
+    <a rel="full-article" href="./mle-derivation.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
         <a href="./argovis-python-api-2.html">Argovis Python API 2</a>
       </h1>
     <p class="meta">
@@ -241,28 +271,6 @@
     <a rel="full-article" href="./python-time-series-fit.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="./r-time-series-fit.html">R Time Series Fit</a>
-      </h1>
-    <p class="meta">
-<time datetime="2017-12-28T23:00:00-08:00" pubdate>Thu 28 December 2017</time>    </p>
-</header>
-
-  <div class="entry-content">
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Nonlinear-least-squares-fitting-of-time-series">Nonlinear least squares fitting of time series<a class="anchor-link" href="#Nonlinear-least-squares-fitting-of-time-series">¶</a></h1><p>This post is the 2nd part of a three-part series into argovis.</p>
-<ol>
-<li><a href="http://www.itsonlyamodel.us/argovis-python-api.html">Argovis api</a> introduces my website <a href="http://www.argovis.com">www.argovis.com</a>, and how users can access data using a python API. </li>
-<li><a href="http://www.argo.ucsd.edu/r-time-series-fit.html">Linear time series analysis in R</a> shows how time series models can be used to fit ocean temperatures from Argo data.</li></div>
-  <footer>
-    <a rel="full-article" href="./r-time-series-fit.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="./index2.html">&larr; Older</a>
 
@@ -272,6 +280,9 @@
   <section>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
+      <li class="post">
+          <a href="./mle-derivation.html">MLE Derivation</a>
+      </li>
       <li class="post">
           <a href="./argovis-python-api-2.html">Argovis Python API 2</a>
       </li>
@@ -283,9 +294,6 @@
       </li>
       <li class="post">
           <a href="./langley-extrapolation.html">Langley Extrapolation</a>
-      </li>
-      <li class="post">
-          <a href="./argovis-tutorials.html">Argovis Tutorials</a>
       </li>
     </ul>
   </section>
@@ -305,7 +313,7 @@
 
   <section>
   <h1>Tags</h1>
-    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/r.html">R</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/r.html">R</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
 
 
     <section>

@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MLE Derivation &mdash; itsonlyamodel</title>
+  <meta name="author" content="tyler tucker">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="./favicon.png" rel="icon">
+
+  <link href="./theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="./">itsonlyamodel</a></h1>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+      <li >
+        <a href="./category/about.html">About</a>
+      </li>
+      <li class="active">
+        <a href="./category/argo.html">Argo</a>
+      </li>
+      <li >
+        <a href="./category/ims.html">Ims</a>
+      </li>
+      <li >
+        <a href="./category/math.html">Math</a>
+      </li>
+      <li >
+        <a href="./category/python.html">Python</a>
+      </li>
+      <li >
+        <a href="./category/statistics.html">Statistics</a>
+      </li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">MLE Derivation</h1>
+    <p class="meta">
+<time datetime="2020-09-29T14:00:00-07:00" pubdate>Tue 29 September 2020</time>    </p>
+</header>
+
+  <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MLE-Space-Time-Numerical-Optimization">MLE Space-Time Numerical Optimization<a class="anchor-link" href="#MLE-Space-Time-Numerical-Optimization">¶</a></h1><p>An anisotropic exponential space-time covariance function
+$$
+k(x_1 , t_1 , x_2 , t_2 ; \theta) = \phi exp(-d(x_1 , t_1 , x_2 , t_2 ))
+$$
+where the GP variance $\phi > 0$ and 
+$$
+d= 
+\sqrt{ 
+\left( \frac{x_{lat,1} - x_{lat,2}}{\theta_{lat}} \right)^2 +
+\left( \frac{x_{lon,1} - x_{lon,2}}{\theta_{lon}} \right)^2 + 
+\left( \frac{x_{t,1} - x_{t,2}}{\theta_{t}} \right)^2}
+$$</p>
+<p>Is used to estimate the covariance structure of the Global Oceans using Argo Floats in Kuusela Stein's paper <a href="https://arxiv.org/abs/1711.00460">here</a>. My group and I cloned their <a href="https://github.com/tylertucker202/Kuusela-Stein">GitHub repostory</a> and tried implementing it on our own, with a few changes. They estimate the $\theta$ parameters using Most Likelihood Estimation (MLE), which is a regression problem. The code provided is in Matlab a language I would rather avoid for numerous reasons such as</p>
+<ol>
+<li>Money, both the base and the additional parallel toolbox</li>
+<li>Transparency, the algorithms used to solve are hidden</li>
+<li>There are better languages. Matlab was my first language, but it's no longer the late 2000's. there are better languages out there that run for free with comparable performance. The language Matlab is owned by MathWorks, who holds sole authority in making changes. This puts the language at a severe disadvantage with open-sourced languages like Rust or Python. The Open source community is walled off from writing a better parallelization toolbox or writing a better IDE.</li>
+<li>Licences. I am a CU Boulder employee with access to the Cheyenne and Casper supercomputing facilities. Included in their cluster are a handful of Matlab licenses. Whenever I want to run Matlab, A license needs to be available, otherwise, I need to wait. This minor annoyance gets tricky when scheduling a large computation spanning weeks. </li>
+</ol>
+<p>Thus, after running into these issues I find it necessary to translate the MLE portion of code from Matlab to Python.</p>
+<p>A part of this effort involves replacing Matlab's unconstrained solver function <code>fminunc</code> with the Scipy's minimize function. Kuusela-Stein used the Broyden–Fletcher–Goldfarb–Shanno (BFGS) algorithm to find the optimal $\theta$. The BFGS method in Python has the option to pass the gradient function of the objective function $l(\theta)$
+$$
+\nabla f = \begin{bmatrix} \frac{df}{d\theta{1}} \\ \frac{df}{d\theta{2}} \\ \vdots \\ \frac{df}{d\theta{n}}  \end{bmatrix}
+$$</p>
+<p>where i are data indexes and j are the parameters $ \theta = [\phi, \theta_{lat}, \theta_{lon}, \theta_t, \sigma]$. $\sigma$ is a Gaussian Nugget $\epsilon_{12} \sim N(0, \sigma)$ parameter: A geostatistical term for noise between closely spaced data. We lumped $\sigma$ in with the remaining parameters since we estimate that too. Matlab's <code>fminunc</code> estimates the gradient using finite differencing. We will go a step further and calculate it ourselves and should expect much better performance in the MLE solver with the gradient defined.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>To do this we need to look at the log-likelihood function</p>
+<p>$$
+l(\theta) = \sum\limits_{n=0}^{total\ years} log\ p(y_n | \theta)
+$$</p>
+<p>Each year indexed by $n$ is calculated separately.</p>
+<p>$$
+l(\theta) = -\frac{1}{2}\sum\limits_{n=0}^{total\ years} l_n(\theta)
+$$</p>
+<p>$$
+l_n(\theta) = log (det(K_n(\theta) + \sigma\ I)) + y_n^T(K_n(\theta) + \sigma^2\ I)^{-1}y_n + m_n log(2\pi)
+$$</p>
+<p>$K_n(\theta)$ is the matrix form of $(x_1 , t_1 , x_2 , t_2 ; \theta)$ for every data point pair combination $(x_i,x_j)$ Note that $k(x_1 , t_1 , x_2 , t_2 ; \theta) = k(x_2 , t_2 , x_1 , t_1 ; \theta)$ making this matrix symmetric. We also assume the matrix is positive definite (symmetric and all of its eigenvalues are positive). $K_n(\theta) \in \mathbb{R}^{m_n\ \times \ m_n }$, $m_n$ is the amount of data for the year ($length\ (y_n)$). $I$ is the identity matrix.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$ l_n(\theta) $ Has a gradient</p>
+<p>$$
+\nabla l(\theta)  = -\frac{1}{2}\sum\limits_{n=0}^{total\ years} \left[ \frac{d}{d\theta_j}l_n(\theta)_n\right]_j
+$$</p>
+<p>where $\nabla l(\theta) $ is a vector $\in \ \mathbb{R}^{5}$</p>
+<p>$K_n(\theta) + \sigma I$ is symmetric (positive definite). We shall use the following matrix identies (See the <a href="https://www.ics.uci.edu/~welling/teaching/KernelsICS273B/MatrixCookBook.pdf">Matrix Cookbook</a>.)</p>
+<!---
+$ Tr(A) = \sum\limits_{i} \lambda_i $. Where $\lambda_i$ is an eigenvalue of $A$.
+$ det(A) = \Pi_{i} \lambda_i $ for Hermitian matrix $A$.
+$ log (det(A)) = \sum\limits_{i} log \lambda_i $
+$ \partial A^{-1} = -A^{-1} \partial A A^{-1} $ (mabye not needed)
+For a symmetric matrix A
+$\partial (log\ det(A)) = 2A^{-1} - (A^{-1} \circ I)$
+where $\circ$ is an elementwise product. 
+[this stack exchange post](https://math.stackexchange.com/questions/3667029/what-is-the-derivative-of-log-det-x-when-x-is-symmetric?noredirect=1&lq=1) for the symmetric special case.
+--->
+<ul>
+<li><p>$\partial (log\ det(A)) = A^{-1}$
+See <a href="https://web.stanford.edu/~boyd/cvxbook/bv_cvxbook.pdf">Boyd and Vandenberghe book Appendix A.4</a> for proof.</p>
+</li>
+<li><p>$A = A^T$ For symmetric matrix $A$</p>
+</li>
+<li><p>$\frac{\partial a^T A^{-1} b}{\partial A} = -A^{-T}ab^TA^{-T}$</p>
+</li>
+<li><p>The chain rule of a function
+$\frac{\partial f(g(\theta))}{\partial \theta} = \frac{\partial f}{\partial g} \frac{\partial g}{\partial \theta}$</p>
+</li>
+<li><p>Chain rule for functions of matricies has the additional property</p>
+</li>
+</ul>
+<p>$
+df(X) = tr(\frac{\partial f}{\partial X} dX)
+$</p>
+<ul>
+<li>An $n \times n$ symmetric matrix $A$ has $n$ distinct eigenvalues $\lambda_i$ and its trace is</li>
+</ul>
+<p>$tr(A) = \sum\limits_{i}^n a_{ii} = \sum\limits_{i}^n \lambda_i$</p>
+<p>Remember that that order matters in matrix multiplication!</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Jacobian-of-$K_n(\theta)-+-\sigma^2\-I$.">Jacobian of $K_n(\theta) + \sigma^2\ I$.<a class="anchor-link" href="#Jacobian-of-$K_n(\theta)-+-\sigma^2\-I$.">¶</a></h2><p>First step is finding each partial derivative of $\kappa_n = K_n(\theta) + \sigma^2 I$, $\nabla \kappa = \frac{d\kappa_{n}(\theta)}{d\theta_j}$. Note that $\kappa_n(\theta)$ is $m \times m$ since we are making a pairwise difference of $x \in \mathbb{R}^{m}$.</p>
+<p>$$
+\kappa_n(\theta) = \phi exp(-d) + \sigma I
+$$</p>
+<p>$$\frac{\partial \kappa_n}{\partial \phi} = exp(-d)$$
+Easy right? Lets do $\sigma$ next.</p>
+<p>$$
+\frac{\partial \kappa_n}{\partial \sigma} = 2 \sigma I
+$$
+The remaining partial derivatives have the same structure. Starting with $\theta_{lat}$ will need to implement the chain rule.</p>
+<p>$$
+\frac{\partial \kappa_n}{\partial \theta_{lat}} = \frac{\partial \kappa_n}{\partial d(\theta)} \frac{\partial d(\theta)}{\partial P(\theta) } \frac{\partial P(\theta)}{\partial \theta}
+$$</p>
+<p>Where</p>
+<p>$$
+d= 
+\sqrt{ P },
+P = \left( \frac{x_{lat,1} - x_{lat,2}}{\theta_{lat}} \right)^2 +
+\left( \frac{x_{lon,1} - x_{lon,2}}{\theta_{lon}} \right)^2 +
+\left( \frac{x_{t,1} - x_{t,2}}{\theta_{t}} \right)^2
+$$</p>
+<p>Which have derivatives</p>
+<p>$$
+\frac{\partial \kappa_n}{\partial d} = -\frac{\partial d}{\partial P} \phi exp(-d), \\
+\frac{\partial d}{\partial P} = \frac{1}{2}P^{-\frac{1}{2}}, \\
+\frac{\partial P(\theta_{lat})}{\partial \theta_{lat}} = -2\frac{(x_{lat,1} - x_{lat,2})^2}{\theta_{lat}^{3}}
+$$</p>
+<p>Substitution yields</p>
+<p>$$
+\frac{\partial \kappa_n}{\partial \theta_{lat}} = \phi exp(-d)\frac{(x_{lat,1} - x_{lat,2})^2}{\theta_{lat}^{3}} \left( \left( \frac{x_{lat,1} - x_{lat,2}}{\theta_{lat}} \right)^2 +
+\left( \frac{x_{lon,1} - x_{lon,2}}{\theta_{lon}} \right)^2 +
+\left( \frac{x_{t,1} - x_{t,2}}{\theta_{t}} \right)^2 \right)^{-\frac{1}{2}}
+$$</p>
+<p>The remaining partial derivatves are found in an identical fashion as $\frac{\partial \kappa_n}{\partial \theta_{lat}}$. Just replace $\theta_{lat}^3$ with $\theta_{lon}^3$ and $\theta_{t}^3$ for $\frac{\partial \kappa_n}{\partial \theta_{lon}}$ and $\frac{\partial \kappa_n}{\partial \theta_{t}}$ respectively.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Gradient-of-the-negative-log-likelihood-function">Gradient of the negative log-likelihood function<a class="anchor-link" href="#Gradient-of-the-negative-log-likelihood-function">¶</a></h2><p>We use the Jacobian of $\kappa_i(\theta)$ to compute the gradient of $l(\theta)$. First we distribute the partial derivative across $l_n(\theta)$  and solve each component.
+$$
+\nabla l(\theta)  = -\frac{1}{2}\sum\limits_{n=0}^{total\ years} \left( \frac{\partial}{\partial \theta} log( det(\kappa_n(\theta)) + \frac{\partial}{\partial \theta} y_n^T(\kappa_n(\theta))^{-1}y_n(\theta) + \frac{\partial}{\partial \theta}m_n log(2\pi) \right)
+$$</p>
+<p>The first term borrows directly borrows from the identity $ \partial (log\ det(A)) = A^{-1}$ and the chain rule.
+$$
+\frac{\partial}{\partial \theta} log( det(\kappa_n(\theta))
+= tr\left( \frac{\partial}{\partial \kappa_n(\theta)}log( det(\kappa_n(\theta) )\frac{ \partial \kappa_n(\theta) } {\partial \theta} \right)
+= tr\left( \kappa_n(\theta)^{-1}\frac{ \partial \kappa_n(\theta) }{\partial \theta} \right)
+$$</p>
+<p>The second term uses the identity $\frac{\partial a^T A^{-1} b}{\partial A} = -A^{-T}ab^TA^{-T}$ combined with the chain rule. Again, $\kappa_n(\theta)$ is symmetric.</p>
+<p>$$
+\frac{\partial}{\partial \theta} y_n^T(\kappa_n(\theta))^{-1}y_n(\theta) = tr\left(\kappa_n(\theta)^{-1} y_ny_n^T \kappa_n(\theta)^{-1} \frac{\partial \kappa_n(\theta) }{\partial \theta} \right)
+$$</p>
+<p>The third term has no $\theta$. Its contribution to the gradient is zero. Gathering everything, the gradient is expressed as</p>
+<p>$$
+\nabla l(\theta) = -\frac{1}{2}\sum\limits_{n=0}^{total\ years} tr\left( \left(\kappa_n(\theta)^{-1} - \kappa_n(\theta)^{-T} y_ny_n^T \kappa_n(\theta)^{-T}\right)\frac{ \partial \kappa_n(\theta) }{\partial \theta} \right)
+$$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Implementing-MLE-solver-in-Python">Implementing MLE solver in Python<a class="anchor-link" href="#Implementing-MLE-solver-in-Python">¶</a></h1><p>We take advantage of the fact that a system of equations $Ax=b$ has the solution $x = A^{-1}b$. Calculating the inverse of $A$ is numerically expensive. We avoid this by taking advantage of the Scipy library's <code>linalg.solve(A,b)</code> function, whos documentation is found <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.solve.html">here</a>. In our example, we solve for $x$ by inputting $A$ and $b$ into <code>solve</code>, which efficiently returns $x$ via LU decomposition. Cholesky or QR Decomposition or SVD may also work.</p>
+<p>If we stare at our Jacobian long enough, we see this pattern again and again. <code>linalg.solve</code> is our hammer; our Jacobian, a box of nails.</p>
+<p>$$
+\kappa_n(\theta)^{-1}\frac{ \partial \kappa_n(\theta) }{\partial \theta} = solve(\kappa_n(\theta), \frac{\partial \kappa_n(\theta) }{\partial \theta})
+$$</p>
+<p>$$
+\kappa_n(\theta)^{-T} y_ny_n^T \kappa_n(\theta)^{-T}\frac{\partial \kappa_n(\theta) }{\partial \theta} = solve(\kappa_n(\theta)^{T}, y_ny_n^T) \cdot solve(\kappa_n(\theta), \frac{ \partial \kappa_n(\theta) }{\partial \theta})
+$$</p>
+<!---
+Calculating the inverses of $\kappa_n(\theta)$ is numerically expensive and it turns out we won't even need to! Matrices are a convenient way to store numbers in theory, but in practice, we can represent numbers as arrays. Just remember that each term of $\nabla l(\theta)$ needs to be a vector $\in \ \mathbb{R}^{1 \times \ 5 }$ 
+--->
+<p>We first are going to create the classes needed to compute $l(\theta)$.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">solve</span><span class="p">,</span> <span class="n">eig</span><span class="p">,</span> <span class="n">eigh</span><span class="p">,</span> <span class="n">inv</span><span class="p">,</span> <span class="n">det</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">minimize</span><span class="p">,</span> <span class="n">least_squares</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">pdb</span>
+
+<span class="k">class</span> <span class="nc">Agg</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">julDay</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">res</span> <span class="o">=</span> <span class="n">res</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">julDay</span> <span class="o">=</span> <span class="n">julDay</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataLabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'lat'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">,</span> <span class="s1">'res'</span><span class="p">,</span> <span class="s1">'julDay'</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">arr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">julDay</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">sort_by_time</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">sortIdx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">julDay</span><span class="p">)</span> <span class="c1">#ascending</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take_along_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">sortIdx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take_along_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="n">sortIdx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">julDay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take_along_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">julDay</span><span class="p">,</span> <span class="n">sortIdx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take_along_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="p">,</span> <span class="n">sortIdx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">validate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+        <span class="n">lengthsEqual</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">m</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">()]</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="o"><=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">'empty aggr'</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span> 
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">lengthsEqual</span><span class="p">):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">'data arrays must be of equal length.'</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span>
+        
+<span class="k">class</span> <span class="nc">Data</span><span class="p">(</span><span class="n">Agg</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">julDay</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Data</span><span class="p">,</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">julDay</span> <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_by_time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pairwise_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">julDay</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dlat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pairwise_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dlon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pairwise_difference</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_convert_dlng_dlat_to_Mm</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yyT</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pairwise_product</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">res</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">_check_lengths</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+        <span class="n">lengthsEqual</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="n">m</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataLabels</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">lengthsEqual</span><span class="p">),</span> <span class="s2">"data arrays must be of equal length."</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_pairwise_difference</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+        <span class="sd">'''calculates difference between each point'''</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">arr</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">-</span> <span class="n">cp</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">diff</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+    
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_pairwise_product</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+        <span class="sd">'''calculates product between each point'''</span>
+        <span class="n">cp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">arr</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">pwp</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">*</span> <span class="n">cp</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">pwp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_convert_dlng_dlat_to_Mm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dlat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dlat</span><span class="p">)</span> <span class="o">*</span> <span class="n">RAD_EARTH</span>
+        <span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span><span class="o">.</span><span class="n">T</span><span class="p">)[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dLon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dlon</span><span class="p">)</span> <span class="o">*</span> <span class="n">RAD_EARTH</span>
+    
+    <span class="k">def</span> <span class="nf">reduce_by_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtLimit</span><span class="o">=</span><span class="mi">90</span><span class="p">):</span>
+        <span class="sd">'''reduce profiles whose are more than dtLmiit days apart'''</span>
+        <span class="n">tooFar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">)</span> <span class="o">></span> <span class="n">dtLimit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dt</span><span class="p">[</span><span class="n">tooFar</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dlat</span><span class="p">[</span><span class="n">tooFar</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dlon</span><span class="p">[</span><span class="n">tooFar</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yyT</span><span class="p">[</span><span class="n">tooFar</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tooFar</span> <span class="o">=</span> <span class="n">tooFar</span>
+    
+<span class="k">class</span> <span class="nc">Theta</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">sig</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'phi'</span><span class="p">,</span> <span class="s1">'lat'</span><span class="p">,</span> <span class="s1">'lon'</span><span class="p">,</span> <span class="s1">'t'</span><span class="p">,</span> <span class="s1">'sig'</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">phi</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">lon</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">sig</span><span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">f</span><span class="s1">'phi: </span><span class="si">{self.phi}</span><span class="s1">, lat:</span><span class="si">{self.lat}</span><span class="s1">, lon: </span><span class="si">{self.lon}</span><span class="s1">, t:</span><span class="si">{self.t}</span><span class="s1">, sig:</span><span class="si">{self.sig}</span><span class="s1">'</span>
+        
+    <span class="k">def</span> <span class="nf">arr</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">phi</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sig</span><span class="p">]</span>
+    
+    <span class="k">def</span> <span class="nf">check_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">arr</span><span class="p">()</span>
+        <span class="n">tooLarge</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">></span> <span class="n">LARGEVAL</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+        <span class="n">tooSmall</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o"><</span> <span class="n">SMALLVAL</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">tooLarge</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">'thetas too large {self.__str__()}'</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">tooSmall</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s1">'thetas to small {self.__str__()}'</span><span class="p">)</span>
+        
+
+<span class="n">sq_div</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">arr</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">theta</span><span class="p">),</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="n">kappa_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span>  <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">sig</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">p_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span> <span class="p">[</span><span class="n">sq_div</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlat</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lat</span><span class="p">),</span> <span class="n">sq_div</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlon</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">),</span> <span class="n">sq_div</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">t</span><span class="p">)]</span> <span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span> <span class="n">p_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span> <span class="p">)</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">theta</span><span class="o">.</span><span class="n">phi</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">dist</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">neg_log_liklihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="n">kappa_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">eigVal</span><span class="p">,</span> <span class="n">eigVectors</span> <span class="o">=</span> <span class="n">eigh</span><span class="p">(</span><span class="n">kappa</span><span class="p">)</span>
+    <span class="n">firstTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">eigVal</span><span class="p">))</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">inversePortion</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">res</span><span class="p">,</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">res</span><span class="p">,</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">))</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">firstTerm</span> <span class="o">+</span> <span class="n">inversePortion</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">*</span><span class="n">data</span><span class="o">.</span><span class="n">m</span>
+    
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Let's do some testing on some toy data</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_data</span><span class="p">(</span><span class="n">mLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    <span class="n">mLen</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">julDay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">365</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">agg</span> <span class="o">=</span> <span class="n">Agg</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">julDay</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">agg</span>
+
+<span class="k">def</span> <span class="nf">make_agg_years</span><span class="p">():</span>
+    <span class="n">aggYears</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="mi">2018</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">agg</span> <span class="o">=</span> <span class="n">make_data</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">agg</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+        <span class="n">aggYears</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="n">aggYears</span>
+    
+<span class="n">LARGEVAL</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">8</span>
+<span class="n">SMALLVAL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+<span class="n">RAD_EARTH</span> <span class="o">=</span>  <span class="mf">6.371</span> <span class="c1">#mega meters</span>
+<span class="n">thetaInitGuess</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">400</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">]]</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">make_data</span><span class="p">()</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+<span class="n">aggYears</span> <span class="o">=</span> <span class="n">make_agg_years</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Next, we write the jacobian functions.</p>
+<p>note that $ l_n(\theta) $ Has the gradient of $l_i(\theta)$ multiplied by $\theta$.</p>
+<p>$$
+\nabla l(\theta) = \frac{1}{2}\sum\limits_{n=0}^{total\ years} \left[ \frac{d}{d\theta_j}l_n(\theta)_n\right]_j \theta 
+$$</p>
+<p>We also are setting the $\theta$ values to $exp(\theta)$ to make this an unconstrained optimization problem (inputting, negative values will cause errors).</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">filtAggs</span><span class="p">):</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">thetaArr</span><span class="p">]</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">eth</span><span class="p">)</span>
+    <span class="n">theta</span><span class="o">.</span><span class="n">check_values</span><span class="p">()</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="n">filtAggs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">nllSum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">iYear</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">filtAggs</span><span class="p">[</span><span class="n">iYear</span><span class="p">]</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">validate_data</span><span class="p">():</span>
+            <span class="n">nllSum</span> <span class="o">+=</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">nllSum</span>
+
+<span class="k">def</span> <span class="nf">grad_sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">filtAggs</span><span class="p">):</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">thetaArr</span><span class="p">]</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">eth</span><span class="p">)</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="n">filtAggs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">gradSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">iYear</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">filtAggs</span><span class="p">[</span><span class="n">iYear</span><span class="p">]</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">validate_data</span><span class="p">():</span>
+            <span class="n">gradSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gradSum</span><span class="p">,</span> <span class="n">grad_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">gradSum</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+
+<span class="k">def</span> <span class="nf">grad_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">gradKappa</span> <span class="o">=</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="n">kappa_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">gradNll</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">gradKappa</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">firstTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">gradKappa</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+        <span class="n">secondTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="p">,</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+        <span class="n">gradNll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gradNll</span><span class="p">)</span>
+
+<span class="n">partial_p_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">arr</span><span class="p">,</span> <span class="n">theta</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span> <span class="n">arr</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">theta</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">spc</span> <span class="o">=</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">grad_phi</span> <span class="o">=</span> <span class="n">spc</span> <span class="o">/</span> <span class="n">theta</span><span class="o">.</span><span class="n">phi</span>
+    <span class="n">grad_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">theta</span><span class="o">.</span><span class="n">sig</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">p_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">P</span><span class="p">[</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="c1"># divide by zero correction</span>
+    <span class="n">grad_prefix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">spc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="o">-.</span><span class="mi">5</span><span class="p">))</span>
+    <span class="n">grad_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_prefix</span><span class="p">,</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlat</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
+    <span class="n">grad_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_prefix</span><span class="p">,</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlon</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">))</span>
+    <span class="n">grad_t</span>   <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_prefix</span><span class="p">,</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">t</span><span class="p">))</span>
+    <span class="n">gradList</span> <span class="o">=</span> <span class="p">[</span><span class="n">grad_phi</span><span class="p">,</span> <span class="n">grad_lat</span><span class="p">,</span> <span class="n">grad_lon</span><span class="p">,</span> <span class="n">grad_t</span><span class="p">,</span> <span class="n">grad_sig</span><span class="p">]</span>
+    <span class="n">gradKappa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">gradList</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">gradKappa</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="minimize-on-$nll$">minimize on $nll$<a class="anchor-link" href="#minimize-on-$nll$">¶</a></h1><p>We wish to maximize the negative log-likelihood function (or minimize the negative log-likelihood function). We can create a timeit function decorator that will come in handy for comparing different methods.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [13]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">timed</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">te</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="si">%r</span><span class="s1">  </span><span class="si">%2.2f</span><span class="s1"> ms'</span> <span class="o">%</span> \
+              <span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">(</span><span class="n">te</span> <span class="o">-</span> <span class="n">ts</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">timed</span>
+
+<span class="k">def</span> <span class="nf">obj_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">grad_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">grad_sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">)</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'gtol'</span><span class="p">:</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="s1">'disp'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'maxiter'</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">}</span>
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_no_grad</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'BFGS'</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_grad</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'BFGS'</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">grad_fun</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="n">xOpt</span> <span class="o">=</span> <span class="n">min_obj_no_grad</span><span class="p">()</span>
+<span class="n">xOptFast</span> <span class="o">=</span> <span class="n">min_obj_grad</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Optimization terminated successfully.
+         Current function value: 564.508521
+         Iterations: 26
+         Function evaluations: 192
+         Gradient evaluations: 32
+'min_obj_no_grad'  4366.93 ms
+Optimization terminated successfully.
+         Current function value: 564.508521
+         Iterations: 26
+         Function evaluations: 32
+         Gradient evaluations: 32
+'min_obj_grad'  2013.85 ms
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [14]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xOpt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[14]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>      fun: 564.5085208770715
+ hess_inv: array([[ 1.82146738, -1.2750836 , -0.848378  , -1.10501658, -0.23291553],
+       [-1.2750836 ,  4.78727323,  0.39755456, -0.49214321,  0.15796763],
+       [-0.848378  ,  0.39755456,  1.2029338 ,  0.65909107,  0.11245871],
+       [-1.10501658, -0.49214321,  0.65909107,  2.52415383,  0.15545682],
+       [-0.23291553,  0.15796763,  0.11245871,  0.15545682,  0.03320347]])
+      jac: array([0.00000000e+00, 0.00000000e+00, 0.00000000e+00, 7.62939453e-06,
+       0.00000000e+00])
+  message: 'Optimization terminated successfully.'
+     nfev: 192
+      nit: 26
+     njev: 32
+   status: 0
+  success: True
+        x: array([ 0.32005396, -0.18915801,  1.39279416,  3.83529965,  0.81783682])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [15]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">xOptFast</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[15]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>      fun: 564.5085208770255
+ hess_inv: array([[ 1.8675055 , -1.13645913, -0.91386524, -1.30360793, -0.23922858],
+       [-1.13645913,  4.54822494,  0.39494673, -0.43980675,  0.14324829],
+       [-0.91386524,  0.39494673,  1.21723963,  0.72231417,  0.11916036],
+       [-1.30360793, -0.43980675,  0.72231417,  2.70242171,  0.17678517],
+       [-0.23922858,  0.14324829,  0.11916036,  0.17678517,  0.0339842 ]])
+      jac: array([-6.92383911e-06, -2.25649866e-06, -3.73310065e-06, -1.33861259e-06,
+       -3.55709515e-05])
+  message: 'Optimization terminated successfully.'
+     nfev: 32
+      nit: 26
+     njev: 32
+   status: 0
+  success: True
+        x: array([ 0.32006737, -0.18915984,  1.39278024,  3.83527794,  0.81783489])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [16]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="n">xOpt</span><span class="o">.</span><span class="n">fun</span> <span class="o">>=</span> <span class="n">xOptFast</span><span class="o">.</span><span class="n">fun</span><span class="p">,</span> <span class="s1">'check objective function'</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">xOpt</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">xOptFast</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(),</span> <span class="s1">'check objective function gradient'</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">¶</a></h1><p>Not only is it faster, but calculating the gradient negative log-likelihood by hand can lead to accurate solutions to estimating $\theta$. Generating MLE terms for the global oceans will require that these function evaluations be performed millions of times for data larger than our toy set, potentially saving days of running these on a supercomputer. The headache of calculating the gradient is worth it. One takeaway idea: Would we get better performance from deriving the Hessian? If possible, then other optimization schemes can be used (Newton-CG, dogleg, trust-ncg, trust-krylov, trust-exac, etc.) <a href="https://arxiv.org/abs/2001.10025">this paper</a> shows promise by approximating the Hessian with the Fisher information matrix.</p>
+<p>Thank you all for reading. I hope you find a use for this very interesting method. Please email me at tyler.tucker@colorado.edu if you have any questions.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Extra-pain:-Verify-the-gradient">Extra pain: Verify the gradient<a class="anchor-link" href="#Extra-pain:-Verify-the-gradient">¶</a></h1><p>We verify the derived gradients by estimating the partial derivatives of our function by taking a forward difference approximation. If the approximate and explicit are off by 4 significant figures, we raise an exception.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [68]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">check_grad</span><span class="p">,</span> <span class="n">approx_fprime</span>
+<span class="kn">from</span> <span class="nn">scipy.linalg</span> <span class="k">import</span> <span class="n">inv</span><span class="p">,</span> <span class="n">det</span>
+
+<span class="k">def</span> <span class="nf">obj_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">th</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaArr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">th</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">grad_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">th</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaArr</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">grad_nll</span><span class="p">(</span><span class="n">th</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">make_data</span><span class="p">()</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+<span class="n">thetaInitGuess</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">400</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">]]</span>
+<span class="n">theta</span><span class="o">=</span><span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">6</span>
+<span class="n">sig</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">check_grad</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">grad_fun</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">data</span><span class="p">],</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">eps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[68]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>2.8848073078586123e-08</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [70]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">check_grad</span><span class="p">(</span><span class="n">sum_nll</span><span class="p">,</span> <span class="n">grad_sum_nll</span><span class="p">,</span> <span class="o">*</span><span class="p">[</span><span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">],</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">eps</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[70]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>1.4953248253054328e-05</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><code>check_grad</code> returns the square root of the sum of squares (i.e., the 2-norm) of the difference between <code>grad(x0, *args)</code> and the finite difference approximation of grad using func at the points x0.</p>
+<p>It should be close to zero.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [47]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">grad_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">grad_fun</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">obj_fun</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [48]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">grad_fun</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt output_prompt">Out[48]:</div>
+<div class="output_text output_subarea output_execute_result">
+<pre>array([ 1.16736905e-04, -5.52171990e-03, -7.98177738e-02, -1.89785033e-01,
+        2.64270126e-02])</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="check-$\frac{dl_n}{d\sigma}$">check $\frac{dl_n}{d\sigma}$<a class="anchor-link" href="#check-$\frac{dl_n}{d\sigma}$">¶</a></h3><p>We check the gradient term and the Jacobian of $\kappa_n(\theta)$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [49]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kappa</span> <span class="o">=</span> <span class="n">kappa_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="n">gradKappa</span> <span class="o">=</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+
+<span class="n">spc</span> <span class="o">=</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">j_K_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">theta</span><span class="o">.</span><span class="n">sig</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
+<span class="n">firstTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">gradKappa</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+<span class="n">parSigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+<span class="k">assert</span> <span class="n">grad_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">parSigma</span><span class="p">,</span> <span class="s1">'check sigma grad'</span>
+<span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">j_K_sigma</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()),</span> <span class="s1">'check jacobian of Kappa for sigma '</span>
+<span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">gradKappa</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span> <span class="o">==</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">theta</span><span class="o">.</span><span class="n">sig</span><span class="p">,</span> <span class="s1">'check jacobian of Kappa for sigma '</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [50]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">sig</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span><span class="n">sig</span> <span class="o">+</span> <span class="n">eps</span>
+<span class="n">estParSigma</span> <span class="o">=</span> <span class="p">(</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">eps</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">estParSigma</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">parSigma</span><span class="p">)</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParSigma</span><span class="p">,</span><span class="n">parSigma</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span> <span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of phi'</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>0.026427073862578254
+0.026427012582252406
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>We can see there is a negligable difference. Next we check the remaining partial derivatives.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="check-$\frac{dl_n}{d\phi}$">check $\frac{dl_n}{d\phi}$<a class="anchor-link" href="#check-$\frac{dl_n}{d\phi}$">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [51]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">j_K_phi</span> <span class="o">=</span> <span class="n">spc</span> <span class="o">/</span> <span class="n">theta</span><span class="o">.</span><span class="n">phi</span>
+<span class="n">firstTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">gradKappa</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+<span class="n">parPhi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+
+<span class="n">kappa</span> <span class="o">=</span> <span class="n">kappa_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="k">assert</span> <span class="n">grad_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">parPhi</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [52]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">j_K_phi</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [53]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">phi</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span><span class="n">phi</span> <span class="o">+</span> <span class="n">eps</span>
+<span class="n">estParPhi</span> <span class="o">=</span> <span class="p">(</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">eps</span>
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParPhi</span><span class="p">,</span><span class="n">parPhi</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span><span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of phi'</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="check-$\frac{dl_n}{d\theta_{lat}}$">check $\frac{dl_n}{d\theta_{lat}}$<a class="anchor-link" href="#check-$\frac{dl_n}{d\theta_{lat}}$">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [54]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span><span class="n">lat</span> <span class="o">+</span> <span class="n">eps</span>
+<span class="n">estParLat</span> <span class="o">=</span> <span class="p">(</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">eps</span>
+
+<span class="n">firstTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">gradKappa</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'sym'</span><span class="p">)</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'sym'</span><span class="p">)</span>
+<span class="n">parLat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParLat</span><span class="p">,</span><span class="n">parLat</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span><span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of lat'</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [55]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">p_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">P</span><span class="p">[</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="c1"># divide by zero correction</span>
+<span class="n">grad_prefix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">spc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="o">-.</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">grad_lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_prefix</span><span class="p">,</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlat</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">theta</span><span class="o">.</span><span class="n">lat</span><span class="p">))</span>
+<span class="n">grad_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_prefix</span><span class="p">,</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlon</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">))</span>
+<span class="n">grad_t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_prefix</span><span class="p">,</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">theta</span><span class="o">.</span><span class="n">t</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [56]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">grad_lat</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [57]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">firstTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">inv</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span> <span class="n">grad_lat</span><span class="p">)</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">inv</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">parLat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParLat</span><span class="p">,</span><span class="n">parLat</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span><span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of lat'</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="check-$\frac{dl_n}{d\theta_{lon}}$">check $\frac{dl_n}{d\theta_{lon}}$<a class="anchor-link" href="#check-$\frac{dl_n}{d\theta_{lon}}$">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [58]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span><span class="n">lon</span> <span class="o">+</span> <span class="n">eps</span>
+<span class="n">estParLon</span> <span class="o">=</span> <span class="p">(</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">eps</span>
+<span class="n">firstTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">grad_lon</span><span class="p">,</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'sym'</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">overwrite_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'sym'</span><span class="p">,</span> <span class="n">overwrite_a</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">overwrite_b</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">parLon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParLon</span><span class="p">,</span><span class="n">parLon</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span><span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of lon'</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [60]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span><span class="n">lon</span> <span class="o">+</span> <span class="n">eps</span>
+<span class="n">estParLon</span> <span class="o">=</span> <span class="p">(</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">eps</span>
+
+<span class="n">firstTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">grad_lon</span><span class="p">,</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">assume_a</span><span class="o">=</span><span class="s1">'pos'</span><span class="p">)</span>
+<span class="n">parLon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParLon</span><span class="p">,</span><span class="n">parLon</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span><span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of lon'</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [61]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">p_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">P</span><span class="p">[</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="c1"># divide by zero correction</span>
+<span class="n">grad_prefix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">spc</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="o">-.</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">grad_lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_prefix</span><span class="p">,</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlon</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [62]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">grad_lon</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [63]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">spc</span> <span class="o">=</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">firstTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">inv</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span> <span class="n">gradKappa</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">inv</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">parLon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [65]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">firstTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">grad_lon</span><span class="p">)</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span> <span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">parLon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParLon</span><span class="p">,</span><span class="n">parLon</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span><span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of lat'</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="check-$\frac{dl_n}{d\theta_{t}}$">check $\frac{dl_n}{d\theta_{t}}$<a class="anchor-link" href="#check-$\frac{dl_n}{d\theta_{t}}$">¶</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [66]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">t1</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">t2</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">t2</span><span class="o">.</span><span class="n">t</span> <span class="o">+</span> <span class="n">eps</span>
+<span class="n">estParT</span> <span class="o">=</span> <span class="p">(</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t2</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="o">-</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span> <span class="p">)</span> <span class="o">/</span> <span class="n">eps</span>
+
+<span class="n">firstTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">inv</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span> <span class="n">gradKappa</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">secondTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span> <span class="n">inv</span><span class="p">(</span><span class="n">kappa</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)),</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">parT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">,</span> <span class="n">firstTerm</span><span class="p">))</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_approx_equal</span><span class="p">(</span><span class="n">estParT</span><span class="p">,</span><span class="n">parT</span><span class="p">,</span><span class="n">significant</span><span class="o">=</span><span class="n">sig</span><span class="p">,</span><span class="n">err_msg</span><span class="o">=</span><span class="s1">'check partial derivative of t'</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        Tyler Tucker
+    </span>
+  </span>
+<time datetime="2020-09-29T14:00:00-07:00" pubdate>Tue 29 September 2020</time>  <span class="categories">
+    <a class='category' href='./category/argo.html'>ARGO</a>
+  </span>
+  <span class="categories">
+    <a class="category" href="./tag/python.html">python</a>,    <a class="category" href="./tag/climate.html">climate</a>,    <a class="category" href="./tag/timeseries.html">timeseries</a>,    <a class="category" href="./tag/argovis.html">argovis</a>,    <a class="category" href="./tag/statistics.html">Statistics</a>  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="./mle-derivation.html">MLE Derivation</a>
+      </li>
+      <li class="post">
+          <a href="./argovis-python-api-2.html">Argovis Python API 2</a>
+      </li>
+      <li class="post">
+          <a href="./argovis-r-api.html">Argovis R API</a>
+      </li>
+      <li class="post">
+          <a href="./argovis-python-api.html">Argovis Python API</a>
+      </li>
+      <li class="post">
+          <a href="./langley-extrapolation.html">Langley Extrapolation</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="./category/about.html">about</a></li>
+        <li><a href="./category/argo.html">ARGO</a></li>
+        <li><a href="./category/ims.html">IMS</a></li>
+        <li><a href="./category/math.html">Math</a></li>
+        <li><a href="./category/python.html">Python</a></li>
+        <li><a href="./category/statistics.html">Statistics</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/r.html">R</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="http://kargaaad.blogspot.com/" target="_blank">In my past life, I taught English in the Republic of Georgia</a></li>
+            <li><a href="https://sites.google.com/a/eng.ucsd.edu/156b-2012-winter-team17/" target="_blank">My senior project that im still proud of</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="http://shen.sdsu.edu/research_group.html" target="_blank">My research group</a></li>
+        </ul>
+    </section>
+
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2017&ndash;2020  tyler tucker &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  <script src="./theme/js/modernizr-2.0.js"></script>
+  <script src="./theme/js/ender.js"></script>
+  <script src="./theme/js/octopress.js" type="text/javascript"></script>
+</body>
+</html>
