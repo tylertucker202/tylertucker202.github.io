@@ -61,7 +61,26 @@
   		<article>
 <header>
       <h1 class="entry-title">
-        <a href="./mle-derivation.html">MLE Derivation</a>
+        <a href="./mle-hessian-derivation.html">MLE Hessian Derivation</a>
+      </h1>
+    <p class="meta">
+<time datetime="2020-10-06T14:00:00-07:00" pubdate>Tue 06 October 2020</time>    </p>
+</header>
+
+  <div class="entry-content">
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MLE-Space-Time-Numerical-Optimization-II:-Hessian">MLE Space-Time Numerical Optimization II: Hessian<a class="anchor-link" href="#MLE-Space-Time-Numerical-Optimization-II:-Hessian">¶</a></h1><p>In my <a href="https://www.itsonlyamodel.us/mle-derivation.html">last post</a>, we saw the speedup boosts gained when providing Scipy's minimize solver a gradient. We will take this a step further and see what happens when we provide the Hessian. The Hessian matrix is a second partial derivatives of a function $f(x)$. In our case, the log-likelihood of a Gaussian process with an anisotropic covariance function.</p></div>
+  <footer>
+    <a rel="full-article" href="./mle-hessian-derivation.html">Read On &crarr;</a>
+  </footer>
+  		</article>
+  		<article>
+<header>
+      <h1 class="entry-title">
+        <a href="./mle-gradient-derivation.html">MLE Gradient Derivation</a>
       </h1>
     <p class="meta">
 <time datetime="2020-09-29T14:00:00-07:00" pubdate>Tue 29 September 2020</time>    </p>
@@ -72,20 +91,9 @@
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="MLE-Space-Time-Numerical-Optimization">MLE Space-Time Numerical Optimization<a class="anchor-link" href="#MLE-Space-Time-Numerical-Optimization">¶</a></h1><p>An anisotropic exponential space-time covariance function
-$$
-k(x_1 , t_1 , x_2 , t_2 ; \theta) = \phi exp(-d(x_1 , t_1 , x_2 , t_2 ))
-$$
-where the GP variance $\phi > 0$ and 
-$$
-d= 
-\sqrt{ 
-\left( \frac{x_{lat,1} - x_{lat,2}}{\theta_{lat}} \right)^2 +
-\left( \frac{x_{lon,1} - x_{lon,2}}{\theta_{lon}} \right)^2 + 
-\left( \frac{x_{t,1} - x_{t,2}}{\theta_{t}} \right)^2}
-$$</p></div>
+<h1 id="Numerical-Optimization-Improvements-for-Maximum-Likelihood-Estimation-of-interpolated-Argo-Ocean-Floats.">Numerical Optimization Improvements for Maximum Likelihood Estimation of interpolated Argo Ocean Floats.<a class="anchor-link" href="#Numerical-Optimization-Improvements-for-Maximum-Likelihood-Estimation-of-interpolated-Argo-Ocean-Floats.">¶</a></h1><p>Ocean properties such as temperature and salinity are measured globally by the Argo float array, collecting more than 2 million profiles over a decade. It is enough data to create a climatological product. It is an active area of research and <a href="https://argo.ucsd.edu/data/argo-data-products/">many such products exist</a></div>
   <footer>
-    <a rel="full-article" href="./mle-derivation.html">Read On &crarr;</a>
+    <a rel="full-article" href="./mle-gradient-derivation.html">Read On &crarr;</a>
   </footer>
   		</article>
   		<article>
@@ -249,28 +257,6 @@ $$</p></div>
     <a rel="full-article" href="./Taylor-Series.html">Read On &crarr;</a>
   </footer>
   		</article>
-  		<article>
-<header>
-      <h1 class="entry-title">
-        <a href="./python-time-series-fit.html">Python Time Series Fit</a>
-      </h1>
-    <p class="meta">
-<time datetime="2017-12-28T23:00:00-08:00" pubdate>Thu 28 December 2017</time>    </p>
-</header>
-
-  <div class="entry-content">
-<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Nonlinear-Least-squares-fitting-time-series-in-Python">Nonlinear Least squares fitting time series in Python<a class="anchor-link" href="#Nonlinear-Least-squares-fitting-time-series-in-Python">¶</a></h1><p>This post is the third part of a three-part series into argovis.</p>
-<ol>
-<li><a href="http://www.itsonlyamodel.us/argovis-python-api.html">Argovis api</a> introduces my website <a href="http://www.argovis.com">www.argovis.com</a>, and how users can access data using a python API. </li>
-<li><a href="http://www.argo.ucsd.edu/r-time-series-fit.html">Linear time series analysis in R</a> shows how time series models can be used to fit ocean temperatures from Argo data.</li></div>
-  <footer>
-    <a rel="full-article" href="./python-time-series-fit.html">Read On &crarr;</a>
-  </footer>
-  		</article>
 <div class="pagination">
     <a class="prev" href="./index2.html">&larr; Older</a>
 
@@ -281,7 +267,10 @@ $$</p></div>
     <h1>Recent Posts</h1>
     <ul id="recent_posts">
       <li class="post">
-          <a href="./mle-derivation.html">MLE Derivation</a>
+          <a href="./mle-hessian-derivation.html">MLE Hessian Derivation</a>
+      </li>
+      <li class="post">
+          <a href="./mle-gradient-derivation.html">MLE Gradient Derivation</a>
       </li>
       <li class="post">
           <a href="./argovis-python-api-2.html">Argovis Python API 2</a>
@@ -291,9 +280,6 @@ $$</p></div>
       </li>
       <li class="post">
           <a href="./argovis-python-api.html">Argovis Python API</a>
-      </li>
-      <li class="post">
-          <a href="./langley-extrapolation.html">Langley Extrapolation</a>
       </li>
     </ul>
   </section>

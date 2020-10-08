@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>MLE Hessian Derivation &mdash; itsonlyamodel</title>
+  <meta name="author" content="tyler tucker">
+
+
+
+
+
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="./favicon.png" rel="icon">
+
+  <link href="./theme/css/main.css" media="screen, projection"
+        rel="stylesheet" type="text/css">
+
+  <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+  <link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic"
+        rel="stylesheet" type="text/css">
+</head>
+
+<body>
+  <header role="banner"><hgroup>
+  <h1><a href="./">itsonlyamodel</a></h1>
+</hgroup></header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+</ul>
+
+
+<ul class="main-navigation">
+      <li >
+        <a href="./category/about.html">About</a>
+      </li>
+      <li class="active">
+        <a href="./category/argo.html">Argo</a>
+      </li>
+      <li >
+        <a href="./category/ims.html">Ims</a>
+      </li>
+      <li >
+        <a href="./category/math.html">Math</a>
+      </li>
+      <li >
+        <a href="./category/python.html">Python</a>
+      </li>
+      <li >
+        <a href="./category/statistics.html">Statistics</a>
+      </li>
+</ul></nav>
+  <div id="main">
+    <div id="content">
+<div>
+  <article class="hentry" role="article">
+<header>
+      <h1 class="entry-title">MLE Hessian Derivation</h1>
+    <p class="meta">
+<time datetime="2020-10-06T14:00:00-07:00" pubdate>Tue 06 October 2020</time>    </p>
+</header>
+
+  <div class="entry-content"><style type="text/css">/*!
+*
+* IPython notebook
+*
+*/
+/* CSS font colors for translated ANSI colors. */
+.ansibold {
+  font-weight: bold;
+}
+/* use dark versions for foreground, to improve visibility */
+.ansiblack {
+  color: black;
+}
+.ansired {
+  color: darkred;
+}
+.ansigreen {
+  color: darkgreen;
+}
+.ansiyellow {
+  color: #c4a000;
+}
+.ansiblue {
+  color: darkblue;
+}
+.ansipurple {
+  color: darkviolet;
+}
+.ansicyan {
+  color: steelblue;
+}
+.ansigray {
+  color: gray;
+}
+/* and light for background, for the same reason */
+.ansibgblack {
+  background-color: black;
+}
+.ansibgred {
+  background-color: red;
+}
+.ansibggreen {
+  background-color: green;
+}
+.ansibgyellow {
+  background-color: yellow;
+}
+.ansibgblue {
+  background-color: blue;
+}
+.ansibgpurple {
+  background-color: magenta;
+}
+.ansibgcyan {
+  background-color: cyan;
+}
+.ansibggray {
+  background-color: gray;
+}
+div.cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  border-width: 1px;
+  border-style: solid;
+  border-color: transparent;
+  width: 100%;
+  padding: 5px;
+  /* This acts as a spacer between cells, that is outside the border */
+  margin: 0px;
+  outline: none;
+  border-left-width: 1px;
+  padding-left: 5px;
+  background: linear-gradient(to right, transparent -40px, transparent 1px, transparent 1px, transparent 100%);
+}
+div.cell.jupyter-soft-selected {
+  border-left-color: #90CAF9;
+  border-left-color: #E3F2FD;
+  border-left-width: 1px;
+  padding-left: 5px;
+  border-right-color: #E3F2FD;
+  border-right-width: 1px;
+  background: #E3F2FD;
+}
+@media print {
+  div.cell.jupyter-soft-selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected {
+  border-color: #ababab;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  div.cell.selected {
+    border-color: transparent;
+  }
+}
+div.cell.selected.jupyter-soft-selected {
+  border-left-width: 0;
+  padding-left: 6px;
+  background: linear-gradient(to right, #42A5F5 -40px, #42A5F5 7px, #E3F2FD 7px, #E3F2FD 100%);
+}
+.edit_mode div.cell.selected {
+  border-color: #66BB6A;
+  border-left-width: 0px;
+  padding-left: 6px;
+  background: linear-gradient(to right, #66BB6A -40px, #66BB6A 5px, transparent 5px, transparent 100%);
+}
+@media print {
+  .edit_mode div.cell.selected {
+    border-color: transparent;
+  }
+}
+.prompt {
+  /* This needs to be wide enough for 3 digit prompt numbers: In[100]: */
+  min-width: 14ex;
+  /* This padding is tuned to match the padding on the CodeMirror editor. */
+  padding: 0.4em;
+  margin: 0px;
+  font-family: monospace;
+  text-align: right;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+  /* Don't highlight prompt number selection */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  /* Use default cursor */
+  cursor: default;
+}
+@media (max-width: 540px) {
+  .prompt {
+    text-align: left;
+  }
+}
+div.inner_cell {
+  min-width: 0;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_area {
+  border: 1px solid #cfcfcf;
+  border-radius: 2px;
+  background: #f7f7f7;
+  line-height: 1.21429em;
+}
+/* This is needed so that empty prompt areas can collapse to zero height when there
+   is no content in the output_subarea and the prompt. The main purpose of this is
+   to make sure that empty JavaScript output_subareas have no height. */
+div.prompt:empty {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+div.unrecognized_cell {
+  padding: 5px 5px 5px 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.unrecognized_cell .inner_cell {
+  border-radius: 2px;
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+  border: 1px solid #cfcfcf;
+  background: #eaeaea;
+}
+div.unrecognized_cell .inner_cell a {
+  color: inherit;
+  text-decoration: none;
+}
+div.unrecognized_cell .inner_cell a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+@media (max-width: 540px) {
+  div.unrecognized_cell > div.prompt {
+    display: none;
+  }
+}
+div.code_cell {
+  /* avoid page breaking on code cells when printing */
+}
+@media print {
+  div.code_cell {
+    page-break-inside: avoid;
+  }
+}
+/* any special styling for code cells that are currently running goes here */
+div.input {
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.input {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+/* input_area and input_prompt must match in top border and margin for alignment */
+div.input_prompt {
+  color: #303F9F;
+  border-top: 1px solid transparent;
+}
+div.input_area > div.highlight {
+  margin: 0.4em;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+div.input_area > div.highlight > pre {
+  margin: 0px;
+  border: none;
+  padding: 0px;
+  background-color: transparent;
+}
+/* The following gets added to the <head> if it is detected that the user has a
+ * monospace font with inconsistent normal/bold/italic height.  See
+ * notebookmain.js.  Such fonts will have keywords vertically offset with
+ * respect to the rest of the text.  The user should select a better font.
+ * See: https://github.com/ipython/ipython/issues/1503
+ *
+ * .CodeMirror span {
+ *      vertical-align: bottom;
+ * }
+ */
+.CodeMirror {
+  line-height: 1.21429em;
+  /* Changed from 1em to our global default */
+  font-size: 14px;
+  height: auto;
+  /* Changed to auto to autogrow */
+  background: none;
+  /* Changed from white to allow our bg to show through */
+}
+.CodeMirror-scroll {
+  /*  The CodeMirror docs are a bit fuzzy on if overflow-y should be hidden or visible.*/
+  /*  We have found that if it is visible, vertical scrollbars appear with font size changes.*/
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+.CodeMirror-lines {
+  /* In CM2, this used to be 0.4em, but in CM3 it went to 4px. We need the em value because */
+  /* we have set a different line-height and want this to scale with that. */
+  padding: 0.4em;
+}
+.CodeMirror-linenumber {
+  padding: 0 8px 0 4px;
+}
+.CodeMirror-gutters {
+  border-bottom-left-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.CodeMirror pre {
+  /* In CM3 this went to 4px from 0 in CM2. We need the 0 value because of how we size */
+  /* .CodeMirror-lines */
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+/*
+
+Original style from softwaremaniacs.org (c) Ivan Sagalaev <Maniac@SoftwareManiacs.Org>
+Adapted from GitHub theme
+
+*/
+.highlight-base {
+  color: #000;
+}
+.highlight-variable {
+  color: #000;
+}
+.highlight-variable-2 {
+  color: #1a1a1a;
+}
+.highlight-variable-3 {
+  color: #333333;
+}
+.highlight-string {
+  color: #BA2121;
+}
+.highlight-comment {
+  color: #408080;
+  font-style: italic;
+}
+.highlight-number {
+  color: #080;
+}
+.highlight-atom {
+  color: #88F;
+}
+.highlight-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.highlight-builtin {
+  color: #008000;
+}
+.highlight-error {
+  color: #f00;
+}
+.highlight-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.highlight-meta {
+  color: #AA22FF;
+}
+/* previously not defined, copying from default codemirror */
+.highlight-def {
+  color: #00f;
+}
+.highlight-string-2 {
+  color: #f50;
+}
+.highlight-qualifier {
+  color: #555;
+}
+.highlight-bracket {
+  color: #997;
+}
+.highlight-tag {
+  color: #170;
+}
+.highlight-attribute {
+  color: #00c;
+}
+.highlight-header {
+  color: blue;
+}
+.highlight-quote {
+  color: #090;
+}
+.highlight-link {
+  color: #00c;
+}
+/* apply the same style to codemirror */
+.cm-s-ipython span.cm-keyword {
+  color: #008000;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-atom {
+  color: #88F;
+}
+.cm-s-ipython span.cm-number {
+  color: #080;
+}
+.cm-s-ipython span.cm-def {
+  color: #00f;
+}
+.cm-s-ipython span.cm-variable {
+  color: #000;
+}
+.cm-s-ipython span.cm-operator {
+  color: #AA22FF;
+  font-weight: bold;
+}
+.cm-s-ipython span.cm-variable-2 {
+  color: #1a1a1a;
+}
+.cm-s-ipython span.cm-variable-3 {
+  color: #333333;
+}
+.cm-s-ipython span.cm-comment {
+  color: #408080;
+  font-style: italic;
+}
+.cm-s-ipython span.cm-string {
+  color: #BA2121;
+}
+.cm-s-ipython span.cm-string-2 {
+  color: #f50;
+}
+.cm-s-ipython span.cm-meta {
+  color: #AA22FF;
+}
+.cm-s-ipython span.cm-qualifier {
+  color: #555;
+}
+.cm-s-ipython span.cm-builtin {
+  color: #008000;
+}
+.cm-s-ipython span.cm-bracket {
+  color: #997;
+}
+.cm-s-ipython span.cm-tag {
+  color: #170;
+}
+.cm-s-ipython span.cm-attribute {
+  color: #00c;
+}
+.cm-s-ipython span.cm-header {
+  color: blue;
+}
+.cm-s-ipython span.cm-quote {
+  color: #090;
+}
+.cm-s-ipython span.cm-link {
+  color: #00c;
+}
+.cm-s-ipython span.cm-error {
+  color: #f00;
+}
+.cm-s-ipython span.cm-tab {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAMCAYAAAAkuj5RAAAAAXNSR0IArs4c6QAAAGFJREFUSMft1LsRQFAQheHPowAKoACx3IgEKtaEHujDjORSgWTH/ZOdnZOcM/sgk/kFFWY0qV8foQwS4MKBCS3qR6ixBJvElOobYAtivseIE120FaowJPN75GMu8j/LfMwNjh4HUpwg4LUAAAAASUVORK5CYII=);
+  background-position: right;
+  background-repeat: no-repeat;
+}
+div.output_wrapper {
+  /* this position must be relative to enable descendents to be absolute within it */
+  position: relative;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  z-index: 1;
+}
+/* class for the output area when it should be height-limited */
+div.output_scroll {
+  /* ideally, this would be max-height, but FF barfs all over that */
+  height: 24em;
+  /* FF needs this *and the wrapper* to specify full width, or it will shrinkwrap */
+  width: 100%;
+  overflow: auto;
+  border-radius: 2px;
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+  display: block;
+}
+/* output div while it is collapsed */
+div.output_collapsed {
+  margin: 0px;
+  padding: 0px;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+div.out_prompt_overlay {
+  height: 100%;
+  padding: 0px 0.4em;
+  position: absolute;
+  border-radius: 2px;
+}
+div.out_prompt_overlay:hover {
+  /* use inner shadow to get border that is computed the same on WebKit/FF */
+  -webkit-box-shadow: inset 0 0 1px #000;
+  box-shadow: inset 0 0 1px #000;
+  background: rgba(240, 240, 240, 0.5);
+}
+div.output_prompt {
+  color: #D84315;
+}
+/* This class is the outer container of all output sections. */
+div.output_area {
+  padding: 0px;
+  page-break-inside: avoid;
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+div.output_area .MathJax_Display {
+  text-align: left !important;
+}
+div.output_area 
+div.output_area 
+div.output_area img,
+div.output_area svg {
+  max-width: 100%;
+  height: auto;
+}
+div.output_area img.unconfined,
+div.output_area svg.unconfined {
+  max-width: none;
+}
+/* This is needed to protect the pre formating from global settings such
+   as that of bootstrap */
+.output {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: vertical;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: vertical;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.output_area {
+    /* Old browsers */
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-box-align: stretch;
+    display: -moz-box;
+    -moz-box-orient: vertical;
+    -moz-box-align: stretch;
+    display: box;
+    box-orient: vertical;
+    box-align: stretch;
+    /* Modern browsers */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+div.output_area pre {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  color: black;
+  background-color: transparent;
+  border-radius: 0;
+}
+/* This class is for the output subarea inside the output_area and after
+   the prompt div. */
+div.output_subarea {
+  overflow-x: auto;
+  padding: 0.4em;
+  /* Old browsers */
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  box-flex: 1;
+  /* Modern browsers */
+  flex: 1;
+  max-width: calc(100% - 14ex);
+}
+div.output_scroll div.output_subarea {
+  overflow-x: visible;
+}
+/* The rest of the output_* classes are for special styling of the different
+   output types */
+/* all text output has this class: */
+div.output_text {
+  text-align: left;
+  color: #000;
+  /* This has to match that of the the CodeMirror class line-height below */
+  line-height: 1.21429em;
+}
+/* stdout/stderr are 'text' as well as 'stream', but execute_result/error are *not* streams */
+div.output_stderr {
+  background: #fdd;
+  /* very light red background for stderr */
+}
+div.output_latex {
+  text-align: left;
+}
+/* Empty output_javascript divs should have no height */
+div.output_javascript:empty {
+  padding: 0;
+}
+.js-error {
+  color: darkred;
+}
+/* raw_input styles */
+div.raw_input_container {
+  line-height: 1.21429em;
+  padding-top: 5px;
+}
+pre.raw_input_prompt {
+  /* nothing needed here. */
+}
+input.raw_input {
+  font-family: monospace;
+  font-size: inherit;
+  color: inherit;
+  width: auto;
+  /* make sure input baseline aligns with prompt */
+  vertical-align: baseline;
+  /* padding + margin = 0.5em between prompt and cursor */
+  padding: 0em 0.25em;
+  margin: 0em 0.25em;
+}
+input.raw_input:focus {
+  box-shadow: none;
+}
+p.p-space {
+  margin-bottom: 10px;
+}
+div.output_unrecognized {
+  padding: 5px;
+  font-weight: bold;
+  color: red;
+}
+div.output_unrecognized a {
+  color: inherit;
+  text-decoration: none;
+}
+div.output_unrecognized a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+.rendered_html {
+  color: #000;
+  /* any extras will just be numbers: */
+}
+
+
+
+.rendered_html :link {
+  text-decoration: underline;
+}
+.rendered_html :visited {
+  text-decoration: underline;
+}
+
+
+
+
+
+
+.rendered_html h1:first-child {
+  margin-top: 0.538em;
+}
+.rendered_html h2:first-child {
+  margin-top: 0.636em;
+}
+.rendered_html h3:first-child {
+  margin-top: 0.777em;
+}
+.rendered_html h4:first-child {
+  margin-top: 1em;
+}
+.rendered_html h5:first-child {
+  margin-top: 1em;
+}
+.rendered_html h6:first-child {
+  margin-top: 1em;
+}
+
+
+
+
+
+
+
+
+.rendered_html * + ul {
+  margin-top: 1em;
+}
+.rendered_html * + ol {
+  margin-top: 1em;
+}
+
+
+.rendered_html pre,
+
+
+
+.rendered_html tr,
+.rendered_html th,
+
+.rendered_html td,
+
+
+.rendered_html * + table {
+  margin-top: 1em;
+}
+
+.rendered_html * + p {
+  margin-top: 1em;
+}
+
+.rendered_html * + img {
+  margin-top: 1em;
+}
+.rendered_html img,
+
+.rendered_html img.unconfined,
+
+div.text_cell {
+  /* Old browsers */
+  display: -webkit-box;
+  -webkit-box-orient: horizontal;
+  -webkit-box-align: stretch;
+  display: -moz-box;
+  -moz-box-orient: horizontal;
+  -moz-box-align: stretch;
+  display: box;
+  box-orient: horizontal;
+  box-align: stretch;
+  /* Modern browsers */
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+}
+@media (max-width: 540px) {
+  div.text_cell > div.prompt {
+    display: none;
+  }
+}
+div.text_cell_render {
+  /*font-family: "Helvetica Neue", Arial, Helvetica, Geneva, sans-serif;*/
+  outline: none;
+  resize: none;
+  width: inherit;
+  border-style: none;
+  padding: 0.5em 0.5em 0.5em 0.4em;
+  color: #000;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+a.anchor-link:link {
+  text-decoration: none;
+  padding: 0px 20px;
+  visibility: hidden;
+}
+h1:hover .anchor-link,
+h2:hover .anchor-link,
+h3:hover .anchor-link,
+h4:hover .anchor-link,
+h5:hover .anchor-link,
+h6:hover .anchor-link {
+  visibility: visible;
+}
+.text_cell.rendered .input_area {
+  display: none;
+}
+.text_cell.rendered 
+.text_cell.unrendered .text_cell_render {
+  display: none;
+}
+.cm-header-1,
+.cm-header-2,
+.cm-header-3,
+.cm-header-4,
+.cm-header-5,
+.cm-header-6 {
+  font-weight: bold;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cm-header-1 {
+  font-size: 185.7%;
+}
+.cm-header-2 {
+  font-size: 157.1%;
+}
+.cm-header-3 {
+  font-size: 128.6%;
+}
+.cm-header-4 {
+  font-size: 110%;
+}
+.cm-header-5 {
+  font-size: 100%;
+  font-style: italic;
+}
+.cm-header-6 {
+  font-size: 100%;
+  font-style: italic;
+}
+</style>
+<style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .ch { color: #408080; font-style: italic } /* Comment.Hashbang */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .cpf { color: #408080; font-style: italic } /* Comment.PreprocFile */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mb { color: #666666 } /* Literal.Number.Bin */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sa { color: #BA2121 } /* Literal.String.Affix */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .fm { color: #0000FF } /* Name.Function.Magic */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .vm { color: #19177C } /* Name.Variable.Magic */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+<style type="text/css">
+/* Temporary definitions which will become obsolete with Notebook release 5.0 */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-bold { font-weight: bold; }
+</style>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="MLE-Space-Time-Numerical-Optimization-II:-Hessian">MLE Space-Time Numerical Optimization II: Hessian<a class="anchor-link" href="#MLE-Space-Time-Numerical-Optimization-II:-Hessian">¶</a></h1><p>In my <a href="https://www.itsonlyamodel.us/mle-derivation.html">last post</a>, we saw the speedup boosts gained when providing Scipy's minimize solver a gradient. We will take this a step further and see what happens when we provide the Hessian. The Hessian matrix is a second partial derivatives of a function $f(x)$. In our case, the log-likelihood of a Gaussian process with an anisotropic covariance function.</p>
+<p>An anisotropic exponential space-time covariance function for a given year $n$
+$$
+k_n(x_1 , t_1 , x_2 , t_2 ; \theta) = \phi exp(-d(x_1 , t_1 , x_2 , t_2 ))
+$$
+where the GP variance $\phi > 0$ and 
+$$
+d= 
+\sqrt{ P }\\
+P = \left( \frac{\Delta lat}{\theta_{lat}} \right)^2 +
+\left( \frac{\Delta lon}{\theta_{lon}} \right)^2 +
+\left( \frac{\Delta t}{\theta_{t}} \right)^2
+$$</p>
+<p>has a log-likelihood function</p>
+<p>$$
+l_n(\theta) = log (det(K_n(\theta) + \sigma\ I)) + y_n^T(K_n(\theta) + \sigma^2\ I)^{-1}y_n + m_n log(2\pi)
+$$</p>
+<p>The total log-likelihood function for all years is a summation</p>
+<p>$$
+l(\theta) = -\frac{1}{2}\sum\limits_{n=0}^{total\ years} l_n(\theta)
+$$</p>
+<p>Where $\kappa_n = K_n(\theta) + \sigma^2 I$</p>
+<p>In our last entry, we found that the gradient</p>
+<p>$$
+\nabla l(\theta) = -\frac{1}{2}\sum\limits_{n=0}^{total\ years} tr\left( \left(\kappa_n(\theta)^{-1} - \kappa_n(\theta)^{-T} y_ny_n^T \kappa_n(\theta)^{-T}\right)\frac{ \partial \kappa_n(\theta) }{\partial \theta} \right)
+$$</p>
+<p>We are interested in finding $\theta_{opt}$ that will minimize $l(\theta)$, and have found that providing the analytical function $\nabla l(\theta)$ Does a much better job in running the BFGS minimization algorithm. But there are faster algorithms available that can compute results much faster if you provide the Hessian.</p>
+<p>$$
+\nabla^2 l_n(\theta) = tr\left( \kappa_n^{-1} \partial^2\kappa_n \kappa_n^{-1}\kappa_n yy^T\right) + 2tr\left( \kappa_n^{-1} \partial \kappa_n \kappa_n^{-1}\partial\kappa_n \kappa_n^{-1}\left(yy^T-\frac{1}{2}\kappa_n\right)\right)
+$$</p>
+<p>In this notebook, we shall compute the Hessian by hand and use a few different methods that will find the optimal values for $\theta$ in much fewer steps. Also, recall that we are working with a constrained optimization problem, but unconstrained optimization is possible with the transformation $\zeta = exp(\theta)$, which makes</p>
+<p>$$
+\nabla l(\zeta) = \nabla l(exp(\theta)) \odot \theta
+$$</p>
+<p>$$
+\nabla^2 l(\zeta) = \nabla^2 l(exp(\theta)) \odot \theta^T \theta
+$$</p>
+<p>Where $\odot$ is the pairwise product operator. We shall see that this step is not needed for constrained optimization algorithms.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>For</p>
+<p>$$\theta = \begin{bmatrix} \phi \\ \theta_{lat} \\ \theta_{lon} \\ \theta_{t} \\ \sigma  \end{bmatrix}$$</p>
+<p>The hessian $\nabla ^2 l(\theta)$ is a $5 \times 5$ matrix, as is $\nabla^2 l_n(\theta)$. However $\nabla^2 \kappa_n$ is a tensor of rank 4 $\nabla^2 \kappa_n \in \mathbb{R}^{5 \times 5 \times m_n\ \times \ m_n }$ Revealing a daunting Hessian</p>
+<p>$$ \Large
+\nabla^2\kappa = 
+\begin{bmatrix}
+\frac{\partial \kappa}{\partial\phi^2}\
+\frac{\partial \kappa}{\partial\phi\partial \theta_{lat}}\
+\frac{\partial \kappa}{\partial\phi\partial \theta_{lon}}\
+\frac{\partial \kappa}{\partial\phi\partial \theta_{t}}\
+\frac{\partial \kappa}{\partial\phi\partial \sigma}\
+\\
+\frac{\partial \kappa}{\partial\theta_{lat}\partial\phi}\
+\frac{\partial \kappa}{\partial\theta_{lat}^2}\
+\frac{\partial \kappa}{\partial\theta_{lat}\partial \theta_{lon}}\
+\frac{\partial \kappa}{\partial\theta_{lat}\partial \theta_{t}}\
+\frac{\partial \kappa}{\partial\theta_{lat}\partial \sigma}\
+\\
+\frac{\partial \kappa}{\partial\theta_{lon}\partial\phi}\
+\frac{\partial \kappa}{\partial\theta_{lon}\partial \theta_{lat}}\
+\frac{\partial \kappa}{\partial\theta_{lon}^2}\
+\frac{\partial \kappa}{\partial\theta_{lon}\partial \theta_{t}}\
+\frac{\partial \kappa}{\partial\theta_{lon}\partial \sigma}\
+\\
+\frac{\partial \kappa}{\partial \theta_{t}\partial\phi}\
+\frac{\partial \kappa}{\partial\theta_{t}\partial \theta_{lat}}\
+\frac{\partial \kappa}{\partial\theta_{t}\partial \theta_{lon}}\
+\frac{\partial \kappa}{\partial\theta_{t}^2}\
+\frac{\partial \kappa}{\partial\theta_{t}\partial \sigma}\
+\\
+\frac{\partial \kappa}{\partial \sigma \partial \phi}\
+\frac{\partial \kappa}{\partial \sigma \partial \theta_{lat}}\
+\frac{\partial \kappa}{\partial \sigma \partial \theta_{lon}}\
+\frac{\partial \kappa}{\partial \sigma \partial \theta_{t}}\
+\frac{\partial \kappa}{\partial \sigma^2}\
+\end{bmatrix}
+$$</p>
+<p>Wow. Fortunately, we shall see that this matrix is symmetric and many of these terms are zero. The non zero terms are</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>$\Large\
+\frac{\partial \kappa}{\partial\theta_{lat}} = \frac{\phi\Delta\ lat^2}{\theta_{lat} ^ 4} exp\left(-\sqrt{P}\right)\
+P^{-\frac{1}{2}}\left(-3 + \frac{\Delta lat^2}{\theta_{lat}}P^{-\frac{1}{2}}\left( 1 + P^{-\frac{1}{2}}\right)\right)\\\Large\
+\frac{\partial \kappa}{\partial\theta_{lon}} = \frac{\phi\Delta\ lon^2}{\theta_{lon} ^ 4} exp\left(-\sqrt{P}\right)\
+P^{-\frac{1}{2}}\left(-3 + \frac{\Delta lon^2}{\theta_{lon}}P^{-\frac{1}{2}}\left( 1 + P^{-\frac{1}{2}}\right)\right)\\\Large\
+\frac{\partial \kappa}{\partial\theta_{t}} = \frac{\phi\Delta\ t^2}{\theta_{t} ^ 4} exp\left(-\sqrt{P}\right)\ 
+P^{-\frac{1}{2}}\left(-3 + \frac{\Delta t^2}{\theta_{t}}P^{-\frac{1}{2}}\left( 1 + P^{-\frac{1}{2}}\right)\right)\\\Large\
+\frac{\partial \kappa}{\partial\sigma^2} = 2I\\\Large\
+\frac{\partial \kappa}{\partial \phi        \partial\theta_{lat}} = \frac{\partial \kappa}{\partial \theta_{lat}\partial\phi} = \
+\frac{\Delta lat^2}{\theta_{lat}^3}exp\left(-\sqrt{P}\right)P^{-\frac{1}{2}}
+\\\Large\
+\frac{\partial \kappa}{\partial \theta_{lon}\partial\theta_{lat}} = \frac{\partial \kappa}{\theta_{lon}\partial \theta_{lat}} = \
+\frac{\phi \Delta lon^2 \Delta lat^2}{\theta_{lon}^3\theta_{lat}^3}exp\left(-\sqrt{P}\right)P^{-1}\left( 1 + P^{-\frac{1}{2}} \right)
+\\\Large\
+\frac{\partial \kappa}{\partial \theta_{t} \partial\theta_{lon}} = \frac{\partial \kappa}{\partial \theta_{lon} \partial\theta_{t}} = \
+\frac{\phi \Delta lon^2 \Delta t^2 }{\theta_{lon}^3\theta_{t}^3}exp\left(-\sqrt{P}\right)P^{-1}\left( 1 + P^{-\frac{1}{2}} \right)
+\\\Large\
+\frac{\partial \kappa}{\partial \phi        \partial\theta_{lon}} = \frac{\partial \kappa}{\partial \theta_{lon}\partial\phi} = \
+\frac{\Delta lon^2}{\theta_{lon}^3}exp\left(-\sqrt{P}\right)P^{-\frac{1}{2}}
+\\\Large\
+\frac{\partial \kappa}{\partial \theta_{lon}\partial\theta_{lat}} = \frac{\partial \kappa}{\theta_{lon}\partial \theta_{lat}} = \
+\frac{\phi \Delta lon^2 \Delta lat^2}{\theta_{lon}^3\theta_{lat}^3}exp\left(-\sqrt{P}\right)P^{-1}\left( 1 + P^{-\frac{1}{2}} \right)
+\\\Large\
+\frac{\partial \kappa}{\partial \theta_{t} \partial\theta_{lat}} = \frac{\partial \kappa}{\partial \theta_{lat} \partial\theta_{t}} = \
+\frac{\phi \Delta lat^2 \Delta t^2 }{\theta_{lat}^3\theta_{t}^3}exp\left(-\sqrt{P}\right)P^{-1}\left( 1 + P^{-\frac{1}{2}} \right)
+$</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Implementing-in-Python">Implementing in Python<a class="anchor-link" href="#Implementing-in-Python">¶</a></h2><p>Here we will check our analytical functions for $\nabla^2 \kappa, \nabla^2 l_n$, and $\nabla^2 l$. With the numerical approximation.
+We reuse some of the classes and functions from the last post.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">local_mle_space_time</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">make_data</span><span class="p">(</span><span class="n">mLen</span><span class="o">=</span><span class="mi">40</span><span class="p">):</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">lon</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">julDay</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">365</span><span class="p">,</span> <span class="n">mLen</span><span class="p">)</span>
+    <span class="n">agg</span> <span class="o">=</span> <span class="n">Agg</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">res</span><span class="p">,</span> <span class="n">julDay</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">agg</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">LARGEVAL</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">8</span>
+<span class="n">SMALLVAL</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span>
+<span class="n">thetaInitGuess</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">400</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">100</span><span class="p">]]</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaInitGuess</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">make_data</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hess_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">p_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">P</span><span class="p">[</span><span class="n">P</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span> <span class="c1"># divide by zero correction</span>
+    <span class="n">Pnsq</span> <span class="o">=</span> <span class="n">P</span> <span class="o">**</span> <span class="o">-.</span><span class="mi">5</span>
+    <span class="n">Pchunk</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">P</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">Pnsq</span><span class="p">)</span>
+    
+    <span class="n">stChunk</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">th1</span><span class="p">,</span> <span class="n">th2</span><span class="p">:</span> <span class="n">Pchunk</span> <span class="o">/</span> <span class="p">(</span><span class="n">th1</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">th2</span> <span class="o">**</span> <span class="mi">3</span> <span class="p">)</span>
+    <span class="n">stcov</span> <span class="o">=</span> <span class="n">space_time_covariance_exp</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">stcovdp</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">/</span> <span class="n">theta</span><span class="o">.</span><span class="n">phi</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcovdp</span> <span class="o">*</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlat</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">Pnsq</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcovdp</span> <span class="o">*</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlon</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span> <span class="o">*</span> <span class="n">Pnsq</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcovdp</span> <span class="o">*</span> <span class="n">partial_p_fun</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">t</span><span class="p">)</span> <span class="o">*</span> <span class="n">Pnsq</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">H</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    
+    <span class="n">dlatsdlons</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dlat</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">dlon</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">dlatsdts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dlat</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">dt</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">dlonsdts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dt</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">dlon</span> <span class="o">**</span> <span class="mi">2</span>
+    
+    <span class="n">latlngChunk</span> <span class="o">=</span> <span class="n">stChunk</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+    <span class="n">lattChunk</span> <span class="o">=</span> <span class="n">stChunk</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">lontChunk</span> <span class="o">=</span> <span class="n">stChunk</span><span class="p">(</span><span class="n">theta</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+    
+    <span class="n">H</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">*</span> <span class="n">dlatsdlons</span> <span class="o">*</span> <span class="n">latlngChunk</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">*</span> <span class="n">dlatsdlons</span> <span class="o">*</span> <span class="n">latlngChunk</span>
+
+    <span class="n">H</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">*</span> <span class="n">dlatsdts</span>  <span class="o">*</span> <span class="n">lattChunk</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">*</span> <span class="n">dlatsdts</span> <span class="o">*</span> <span class="n">lattChunk</span>
+
+    <span class="n">H</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">*</span> <span class="n">dlonsdts</span> <span class="o">*</span> <span class="n">lontChunk</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">*</span> <span class="n">dlonsdts</span> <span class="o">*</span> <span class="n">lontChunk</span>
+    
+    <span class="n">ddChunk</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">dx</span><span class="p">,</span> <span class="n">th</span><span class="p">:</span> <span class="o">-</span><span class="mi">3</span> <span class="o">+</span> <span class="p">(</span><span class="n">dx</span> <span class="o">/</span> <span class="n">th</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">Pnsq</span> <span class="o">*</span> <span class="p">(</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">Pnsq</span><span class="p">)</span>
+    <span class="n">mChunk</span> <span class="o">=</span> <span class="n">stcov</span> <span class="o">*</span> <span class="n">Pnsq</span>
+    
+    <span class="n">H</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mChunk</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">dlat</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">theta</span><span class="o">.</span><span class="n">lat</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">ddChunk</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlat</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mChunk</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">dlon</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">ddChunk</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dlon</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">lon</span><span class="p">)</span>
+    <span class="n">H</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">mChunk</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">dt</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">theta</span><span class="o">.</span><span class="n">t</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">ddChunk</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">theta</span><span class="o">.</span><span class="n">t</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">H</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>our Hessian estimate functions are defined here.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hessian</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">the_func</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">8</span><span class="p">):</span>
+    <span class="sd">"""Numerical approximation to the Hessian</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    x: array-like</span>
+<span class="sd">        The evaluation point</span>
+<span class="sd">    the_func: function</span>
+<span class="sd">        The function. We assume that the function returns the function value and</span>
+<span class="sd">        the associated gradient as the second return element</span>
+<span class="sd">    eps: float</span>
+<span class="sd">        The size of the step</span>
+<span class="sd">    """</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">))</span>
+    <span class="n">df_0</span> <span class="o">=</span> <span class="n">the_func</span> <span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">xx0</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx0</span> <span class="o">+</span> <span class="n">eps</span>
+        <span class="n">df_1</span> <span class="o">=</span> <span class="n">the_func</span> <span class="p">(</span> <span class="n">x</span> <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">H</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">((</span><span class="n">df_1</span> <span class="o">-</span> <span class="n">df_0</span><span class="p">)</span><span class="o">/</span><span class="n">eps</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx0</span>
+    <span class="k">return</span> <span class="n">H</span>
+
+<span class="k">def</span> <span class="nf">hessian_4D</span> <span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">the_func</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">8</span><span class="p">):</span>
+    <span class="sd">"""Numerical approximation to the 4D Hessian</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ------------</span>
+<span class="sd">    x: array-like</span>
+<span class="sd">        The evaluation point</span>
+<span class="sd">    the_func: function</span>
+<span class="sd">        The function. We assume that the function returns the function value and</span>
+<span class="sd">        the associated gradient as the second return element</span>
+<span class="sd">    eps: float</span>
+<span class="sd">        The size of the step</span>
+<span class="sd">    """</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">N</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">m</span><span class="p">))</span>
+    <span class="n">df_0</span> <span class="o">=</span> <span class="n">the_func</span> <span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">xx0</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">*</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx0</span> <span class="o">+</span> <span class="n">eps</span>
+        <span class="n">df_1</span> <span class="o">=</span> <span class="n">the_func</span> <span class="p">(</span> <span class="n">x</span> <span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">H</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:,</span> <span class="p">:]</span> <span class="o">=</span> <span class="p">((</span><span class="n">df_1</span> <span class="o">-</span> <span class="n">df_0</span><span class="p">)</span><span class="o">/</span><span class="n">eps</span><span class="p">)</span>
+        <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">xx0</span>
+    <span class="k">return</span> <span class="n">H</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">kappaHess</span> <span class="o">=</span> <span class="n">hess_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="n">my_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">th</span><span class="p">:</span> <span class="p">(</span><span class="n">kappa_fun</span><span class="p">(</span><span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">th</span><span class="p">),</span> <span class="n">data</span><span class="p">),</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">th</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
+<span class="n">kappaHessNum</span> <span class="o">=</span> <span class="n">hessian_4D</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">),</span> <span class="n">my_fun</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="n">pdd</span> <span class="o">=</span> <span class="n">kappaHess</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="n">pddx</span> <span class="o">=</span> <span class="n">kappaHessNum</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">pdd</span><span class="p">,</span> <span class="n">pddx</span><span class="p">,</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">5</span><span class="p">):</span>
+        <span class="k">continue</span>
+    <span class="k">for</span> <span class="n">kdx</span><span class="p">,</span> <span class="n">ldx</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">pdd</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">range</span><span class="p">(</span><span class="n">pdd</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])):</span>
+        <span class="n">pdde</span> <span class="o">=</span> <span class="n">pdd</span><span class="p">[</span><span class="n">kdx</span><span class="p">,</span> <span class="n">ldx</span><span class="p">]</span>
+        <span class="n">pddex</span> <span class="o">=</span> <span class="n">pddx</span><span class="p">[</span><span class="n">kdx</span><span class="p">,</span> <span class="n">ldx</span><span class="p">]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'elem: </span><span class="si">{idx}</span><span class="s1">, </span><span class="si">{jdx}</span><span class="s1">, </span><span class="si">{kdx}</span><span class="s1">, </span><span class="si">{ldx}</span><span class="s1">, analytic: </span><span class="si">{pdde}</span><span class="s1">, numeric: </span><span class="si">{pddex}</span><span class="s1">, ratio: {pdde/pddex}'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>The analytic function agrees with the numeric approximation.</p>
+<h1 id="$nll_i(\theta)$-Hessian">$nll_i(\theta)$ Hessian<a class="anchor-link" href="#$nll_i(\theta)$-Hessian">¶</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">hess_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="n">kappa</span> <span class="o">=</span> <span class="n">kappa_fun</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">gradKappa</span> <span class="o">=</span> <span class="n">grad_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">hessKappa</span> <span class="o">=</span> <span class="n">hess_kappa</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">nllHess</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)):</span>
+        <span class="n">ft1</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">hessKappa</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
+        <span class="n">ft2</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">kappa</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span><span class="p">)</span>
+        <span class="n">firstTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ft1</span><span class="p">,</span> <span class="n">ft2</span><span class="p">)</span>
+        <span class="n">st1</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">gradKappa</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
+        <span class="n">st2</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">gradKappa</span><span class="p">[</span><span class="n">jdx</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:])</span>
+        <span class="n">st3</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span><span class="n">kappa</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">yyT</span> <span class="o">-</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">kappa</span><span class="p">)</span>
+        <span class="n">secondTerm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">st1</span><span class="p">,</span> <span class="n">st2</span><span class="p">),</span> <span class="n">st3</span><span class="p">)</span>
+        <span class="n">nllHess</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">]</span> <span class="o">=</span>  <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">firstTerm</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">secondTerm</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nllHess</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">nll_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">th</span><span class="p">:</span> <span class="p">(</span><span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">th</span><span class="p">),</span> <span class="n">data</span><span class="p">),</span> <span class="n">grad_nll</span><span class="p">(</span><span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">th</span><span class="p">),</span> <span class="n">data</span><span class="p">))</span>
+<span class="n">nllHessNum</span> <span class="o">=</span> <span class="n">hessian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">),</span> <span class="n">nll_fun</span><span class="p">)</span>
+<span class="n">nllHess</span> <span class="o">=</span> <span class="n">hess_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="n">pdd</span> <span class="o">=</span> <span class="n">nllHess</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">]</span>
+    <span class="n">pddx</span> <span class="o">=</span> <span class="n">nllHessNum</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">pdd</span><span class="p">,</span> <span class="n">pddx</span><span class="p">,</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'elem: </span><span class="si">{idx}</span><span class="s1">, </span><span class="si">{jdx}</span><span class="s1">, analytic: </span><span class="si">{pdd}</span><span class="s1">, numeric: </span><span class="si">{pddx}</span><span class="s1">, ratio: {pdd/pddx}'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>elem: 1, 4, analytic: 1.0090298510675597e-08, numeric: 4.440892098500626e-08, ratio: 0.22721332306367845
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Sometimes elements can disagree, but we can ignore them if they are small.</p>
+<h1 id="Verify-$nll(\theta)$">Verify $nll(\theta)$<a class="anchor-link" href="#Verify-$nll(\theta)$">¶</a></h1>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">make_agg_years</span><span class="p">():</span>
+    <span class="n">aggYears</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2007</span><span class="p">,</span> <span class="mi">2019</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">make_data</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+        <span class="n">aggYears</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">year</span><span class="p">)]</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="k">return</span> <span class="n">aggYears</span>
+
+<span class="k">def</span> <span class="nf">pairwise_product</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="sd">'''calculates product between each point'''</span>
+    <span class="n">cp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">arr</span><span class="p">))</span><span class="o">.</span><span class="n">T</span>
+    <span class="n">pwp</span> <span class="o">=</span> <span class="n">cp</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">*</span> <span class="n">cp</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">pwp</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">arr</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">filtAggs</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaArr</span><span class="p">)</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="n">filtAggs</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">nllSum</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">iYear</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">filtAggs</span><span class="p">[</span><span class="n">iYear</span><span class="p">]</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+        <span class="n">nllSum</span> <span class="o">+=</span> <span class="n">neg_log_liklihood</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">nllSum</span>
+
+<span class="k">def</span> <span class="nf">grad_sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaArr</span><span class="p">)</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="n">aggYears</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">gradSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">iYear</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Data</span><span class="p">(</span><span class="o">*</span><span class="n">aggYears</span><span class="p">[</span><span class="n">iYear</span><span class="p">]</span><span class="o">.</span><span class="n">arr</span><span class="p">())</span>
+        <span class="n">gradSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">gradSum</span><span class="p">,</span> <span class="n">grad_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span>
+    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">gradSum</span>
+
+<span class="k">def</span> <span class="nf">hess_sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">Theta</span><span class="p">(</span><span class="o">*</span><span class="n">thetaArr</span><span class="p">)</span>
+    <span class="n">years</span> <span class="o">=</span> <span class="n">aggYears</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+    <span class="n">hessSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">iYear</span> <span class="ow">in</span> <span class="n">years</span><span class="p">:</span>
+        <span class="n">data</span>    <span class="o">=</span> <span class="n">aggYears</span><span class="p">[</span><span class="n">iYear</span><span class="p">]</span>
+        <span class="n">hessNll</span> <span class="o">=</span> <span class="n">hess_nll</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="n">hessSum</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hessSum</span><span class="p">,</span> <span class="n">hessNll</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">.</span><span class="mi">5</span> <span class="o">*</span> <span class="n">hessSum</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">aggYears</span> <span class="o">=</span> <span class="n">make_agg_years</span><span class="p">()</span>
+<span class="n">sum_nll_fun</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">th</span><span class="p">:</span> <span class="p">(</span><span class="n">sum_nll</span><span class="p">(</span><span class="n">th</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">),</span> <span class="n">grad_sum_nll</span><span class="p">(</span><span class="n">th</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">))</span>
+<span class="n">sumNllHessNum</span> <span class="o">=</span> <span class="n">hessian</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">),</span> <span class="n">sum_nll_fun</span><span class="p">,</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">6</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">sumNllHess</span> <span class="o">=</span> <span class="n">hess_sum_nll</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)):</span>
+    <span class="n">pdd</span> <span class="o">=</span> <span class="n">sumNllHess</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">]</span>
+    <span class="n">pddx</span> <span class="o">=</span> <span class="n">sumNllHessNum</span><span class="p">[</span><span class="n">idx</span><span class="p">,</span> <span class="n">jdx</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pdd</span><span class="p">,</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">4</span> <span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">pddx</span><span class="p">,</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">4</span> <span class="p">):</span>
+        <span class="k">continue</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">pdd</span><span class="p">,</span> <span class="n">pddx</span><span class="p">,</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">continue</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'elem: </span><span class="si">{idx}</span><span class="s1">, </span><span class="si">{jdx}</span><span class="s1">, analytic: </span><span class="si">{pdd}</span><span class="s1">, numeric: </span><span class="si">{pddx}</span><span class="s1">, ratio: {pdd/pddx}'</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Excellent! Numerical approximations and analytical results are roughly in agreement.</p>
+<h2 id="Unconstrained-optimization">Unconstrained optimization<a class="anchor-link" href="#Unconstrained-optimization">¶</a></h2><p>We need to be aware of transforming the constrained $\theta \gt 0$ to the unconstrained optimization problem $exp(\theta)$ Remember that we are setting the $\theta$ values to $\zeta = exp(\theta)$ to make this an unconstrained optimization problem (inputting, negative values will cause errors). This will have a slight modification on the negative log-likelihood gradient.</p>
+<p>$$\large
+\nabla l(\zeta) = \nabla l(exp(\theta)) \odot \theta
+$$
+and
+$$\large
+\nabla^2 l(\zeta) = \nabla^2 l(exp(\theta)) \odot \theta^T \theta
+$$</p>
+<p>Where $\odot$ is the pairwise product operator.</p>
+<p>We assign our objective functions and apply the available algorithms in <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize">Scipy's minimize</a> documentation. The methods that did not seem to work are omitted.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [12]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">obj_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">thetaArr</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">sum_nll</span><span class="p">(</span><span class="n">eth</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">grad_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">thetaArr</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">grad_sum_nll</span><span class="p">(</span><span class="n">eth</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">eth</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">hess_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="n">eth</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">thetaArr</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">hess_sum_nll</span><span class="p">(</span><span class="n">eth</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">),</span> <span class="n">pairwise_product</span><span class="p">(</span><span class="n">eth</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">timed</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">te</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="si">%r</span><span class="s1">  </span><span class="si">%2.2f</span><span class="s1"> ms'</span> <span class="o">%</span> \
+              <span class="p">(</span><span class="n">method</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span> <span class="p">(</span><span class="n">te</span> <span class="o">-</span> <span class="n">ts</span><span class="p">)</span> <span class="o">*</span> <span class="mi">1000</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">return</span> <span class="n">timed</span>
+
+<span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'disp'</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">'maxiter'</span><span class="p">:</span> <span class="mi">1000</span> <span class="p">}</span>
+
+<span class="k">def</span> <span class="nf">vanilla_cb</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">is_pos_def</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvals</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">></span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Hessian positive definite?: </span><span class="si">{}</span><span class="s1">'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">is_pos_def</span><span class="p">(</span><span class="n">hess_fun</span><span class="p">(</span><span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">))))</span>
+<span class="n">aggYears</span> <span class="o">=</span> <span class="n">make_agg_years</span><span class="p">()</span>
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_no_grad</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'BFGS'</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_grad</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'BFGS'</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">grad_fun</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_grad_nm</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'Nelder-Mead'</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_NCG</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'Newton-CG'</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">grad_fun</span><span class="p">,</span> <span class="n">hess</span><span class="o">=</span><span class="n">hess_fun</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_cg</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'CG'</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">grad_fun</span><span class="p">,</span> <span class="n">hess</span><span class="o">=</span><span class="n">hess_fun</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="n">xOpt</span> <span class="o">=</span> <span class="n">min_obj_no_grad</span><span class="p">()</span>
+<span class="n">xOptFast</span> <span class="o">=</span> <span class="n">min_obj_grad</span><span class="p">()</span>
+<span class="n">xOptNM</span> <span class="o">=</span> <span class="n">min_obj_grad_nm</span><span class="p">()</span>
+<span class="n">xOptsCG</span> <span class="o">=</span> <span class="n">min_obj_cg</span><span class="p">()</span>
+<span class="n">xOptsNCG</span> <span class="o">=</span> <span class="n">min_obj_NCG</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Hessian positive definite?: False
+Optimization terminated successfully.
+         Current function value: 278.898117
+         Iterations: 108
+         Function evaluations: 786
+         Gradient evaluations: 131
+'min_obj_no_grad'  6824.62 ms
+Optimization terminated successfully.
+         Current function value: 278.898116
+         Iterations: 104
+         Function evaluations: 120
+         Gradient evaluations: 120
+'min_obj_grad'  3374.10 ms
+Optimization terminated successfully.
+         Current function value: 278.945299
+         Iterations: 116
+         Function evaluations: 220
+'min_obj_grad_nm'  1887.61 ms
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/home/tyler/anaconda3/envs/argo/lib/python3.6/site-packages/scipy/optimize/_minimize.py:523: RuntimeWarning: Method CG does not use Hessian information (hess).
+  RuntimeWarning)
+</pre>
+</div>
+</div>
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Optimization terminated successfully.
+         Current function value: 278.945330
+         Iterations: 6
+         Function evaluations: 19
+         Gradient evaluations: 19
+'min_obj_cg'  572.18 ms
+Optimization terminated successfully.
+         Current function value: 278.945982
+         Iterations: 16
+         Function evaluations: 21
+         Gradient evaluations: 21
+         Hessian evaluations: 16
+'min_obj_NCG'  3071.64 ms
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Each method was terminated successfully. We also see how a few other minimization routines (documented <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.minimize.html#scipy.optimize.minimize">here</a> completed. The Nelder-Mead (Simplex), Conjugate Gradient, and Newton Conjugate Gradient methods were completed both faster and with fewer steps than BFGS.</p>
+<h1 id="Constrained-Optimization">Constrained Optimization<a class="anchor-link" href="#Constrained-Optimization">¶</a></h1><p>We know at heart that this is a constrained optimization problem so why are we insisting on using $\zeta = exp(\theta)$? The sequential least squares option (SLSQP) only uses the gradient, and makes a very fast prediction.</p>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [19]:</div>
+<div class="inner_cell">
+<div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">obj_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">)</span>
+    
+<span class="k">def</span> <span class="nf">grad_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">grad_sum_nll</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">hess_fun</span><span class="p">(</span><span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">):</span>
+    <span class="n">hess_sum_nll</span><span class="p">(</span> <span class="n">thetaArr</span><span class="p">,</span> <span class="n">aggYears</span><span class="p">)</span>
+<span class="n">maxB</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="mi">10</span>
+<span class="n">minB</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">6</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">[</span> <span class="p">(</span><span class="n">minB</span><span class="p">,</span> <span class="n">maxB</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="p">]</span>
+
+<span class="nd">@timeit</span>
+<span class="k">def</span> <span class="nf">min_obj_grad_slqsp</span><span class="p">():</span> 
+    <span class="k">return</span> <span class="n">minimize</span><span class="p">(</span><span class="n">obj_fun</span><span class="p">,</span> <span class="n">thetaInitGuess</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="n">aggYears</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">'SLSQP'</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mi">10</span><span class="o">**-</span><span class="mi">4</span><span class="p">,</span> <span class="n">jac</span><span class="o">=</span><span class="n">grad_fun</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="n">bounds</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+<span class="n">xOptSLSQP</span> <span class="o">=</span> <span class="n">min_obj_grad_slqsp</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="output_wrapper">
+<div class="output">
+<div class="output_area">
+<div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Optimization terminated successfully    (Exit mode 0)
+            Current function value: 278.73682561966064
+            Iterations: 28
+            Function evaluations: 38
+            Gradient evaluations: 28
+'min_obj_grad_slqsp'  795.42 ms
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h1 id="Final-Remarks">Final Remarks<a class="anchor-link" href="#Final-Remarks">¶</a></h1><p>As painful as it is to calculate gradients and Hessians, we shall see that it does pay off to have an analytical function to plug into your optimization algorithms.</p>
+<p>I was surprised at how well the results turn out when we define some bounds for the Sequential Least-Squares Programming (SLSQP) algorithm. Even when we omit the Hessian, it performs extremely well. Bear in mind that the data we are using in these demonstrations is synthetic. Real data is rarely truly Gaussian or even stationary. I wouldn't be so quick to suggest which method is best, let alone trust that the results even agree. All we have now are options for implementing real data. We can implement a cascade of methods such that when one suboptimal or fails, we try another. Thanks for reading!</p>
+</div>
+</div>
+</div>
+
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = '//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML';
+    mathjaxscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'AMS' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: 'center'," +
+        "    displayIndent: '0em'," +
+        "    showMathMenu: true," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['$','$'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'black ! important'} }" +
+        "    } " +
+        "}); ";
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+</div>
+    <footer>
+<p class="meta">
+  <span class="byline author vcard">
+    Posted by <span class="fn">
+        Tyler Tucker
+    </span>
+  </span>
+<time datetime="2020-10-06T14:00:00-07:00" pubdate>Tue 06 October 2020</time>  <span class="categories">
+    <a class='category' href='./category/argo.html'>ARGO</a>
+  </span>
+  <span class="categories">
+    <a class="category" href="./tag/python.html">python</a>,    <a class="category" href="./tag/climate.html">climate</a>,    <a class="category" href="./tag/timeseries.html">timeseries</a>,    <a class="category" href="./tag/argovis.html">argovis</a>,    <a class="category" href="./tag/statistics.html">Statistics</a>  </span>
+</p><div class="sharing">
+</div>    </footer>
+  </article>
+
+</div>
+<aside class="sidebar">
+  <section>
+    <h1>Recent Posts</h1>
+    <ul id="recent_posts">
+      <li class="post">
+          <a href="./mle-hessian-derivation.html">MLE Hessian Derivation</a>
+      </li>
+      <li class="post">
+          <a href="./mle-gradient-derivation.html">MLE Gradient Derivation</a>
+      </li>
+      <li class="post">
+          <a href="./argovis-python-api-2.html">Argovis Python API 2</a>
+      </li>
+      <li class="post">
+          <a href="./argovis-r-api.html">Argovis R API</a>
+      </li>
+      <li class="post">
+          <a href="./argovis-python-api.html">Argovis Python API</a>
+      </li>
+    </ul>
+  </section>
+  <section>
+      
+    <h1>Categories</h1>
+    <ul id="recent_posts">
+        <li><a href="./category/about.html">about</a></li>
+        <li><a href="./category/argo.html">ARGO</a></li>
+        <li><a href="./category/ims.html">IMS</a></li>
+        <li><a href="./category/math.html">Math</a></li>
+        <li><a href="./category/python.html">Python</a></li>
+        <li><a href="./category/statistics.html">Statistics</a></li>
+    </ul>
+  </section>
+ 
+
+  <section>
+  <h1>Tags</h1>
+    <a href="./tag/calculus.html">calculus</a>,    <a href="./tag/climate.html">climate</a>,    <a href="./tag/statistics.html">Statistics</a>,    <a href="./tag/probability.html">Probability</a>,    <a href="./tag/python.html">python</a>,    <a href="./tag/baysean.html">Baysean</a>,    <a href="./tag/taylor-series.html">taylor series</a>,    <a href="./tag/ocean-modeling.html">ocean modeling</a>,    <a href="./tag/map-projections.html">map projections</a>,    <a href="./tag/fortran.html">fortran</a>,    <a href="./tag/api.html">api</a>,    <a href="./tag/timeseries.html">timeseries</a>,    <a href="./tag/argovis.html">argovis</a>,    <a href="./tag/sympy.html">sympy</a>,    <a href="./tag/r.html">R</a>,    <a href="./tag/optimization.html">optimization</a>  </section>
+
+
+    <section>
+        <h1>Social</h1>
+        <ul>
+            <li><a href="http://kargaaad.blogspot.com/" target="_blank">In my past life, I taught English in the Republic of Georgia</a></li>
+            <li><a href="https://sites.google.com/a/eng.ucsd.edu/156b-2012-winter-team17/" target="_blank">My senior project that im still proud of</a></li>
+        </ul>
+    </section>
+    <section>
+        <h1>Blogroll</h1>
+        <ul>
+            <li><a href="http://shen.sdsu.edu/research_group.html" target="_blank">My research group</a></li>
+        </ul>
+    </section>
+
+</aside>    </div>
+  </div>
+  <footer role="contentinfo"><p>
+    Copyright &copy;  2017&ndash;2020  tyler tucker &mdash;
+  <span class="credit">Powered by <a href="http://getpelican.com">Pelican</a></span>
+</p></footer>
+  <script src="./theme/js/modernizr-2.0.js"></script>
+  <script src="./theme/js/ender.js"></script>
+  <script src="./theme/js/octopress.js" type="text/javascript"></script>
+</body>
+</html>
